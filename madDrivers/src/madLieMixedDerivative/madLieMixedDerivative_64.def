@@ -1,0 +1,2 @@
+LIBRARY madLieMixedDerivative.mexw64
+EXPORTS mexFunction 

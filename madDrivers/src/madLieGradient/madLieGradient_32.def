@@ -1,0 +1,2 @@
+LIBRARY madLiegradient.mexw32
+EXPORTS mexFunction 

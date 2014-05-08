@@ -1,0 +1,2 @@
+LIBRARY madForward.mexw32
+EXPORTS mexFunction 

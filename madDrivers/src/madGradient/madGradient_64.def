@@ -1,0 +1,2 @@
+LIBRARY madGradient.mexw64
+EXPORTS mexFunction 

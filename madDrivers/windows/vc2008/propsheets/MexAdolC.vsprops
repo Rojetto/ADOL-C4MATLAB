@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="MexAdolC"
+	OutputDirectory="$(MEXADC_BUILD_DIR)"
+	IntermediateDirectory="$(MEXADC_TEMP_DIR)\$(ProjectName)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="&quot;$(ADOLC_INCLUDE_DIR)&quot;;&quot;$(MEX_INCLUDE_DIR)&quot;;stdint;..\..\src\madHelpers;..\..\src\AdolCLie"
+		PreprocessorDefinitions="MATLAB_MEX_FILE"
+		DisableSpecificWarnings="4267,4273"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="libmex.lib libmx.lib libmat.lib AdolC.lib"
+		AdditionalLibraryDirectories="$(MEX_LIB_DIR);$(ADOLC_LIB_DIR)"
+		ProgramDatabaseFile="$(IntDir)\$(ProjectName).pdb"
+	/>
+	<Tool
+		Name="VCPostBuildEventTool"
+		CommandLine="del $(OutDir)\$(ProjectName).exp&#x0D;&#x0A;del $(OutDir)\$(ProjectName).lib&#x0D;&#x0A;copy /Y &quot;$(ADOLC_LIB_DIR)\adolc.dll&quot; &quot;$(MEXADC_BUILD_DIR)\adolc.dll&quot;&#x0D;&#x0A;"
+	/>
+	<UserMacro
+		Name="ADOLC_INCLUDE_DIR"
+		Value="..\..\..\..\AdolC4Win\src\ADOL-C\include"
+	/>
+	<UserMacro
+		Name="MEX_INCLUDE_DIR"
+		Value="C:\Program Files\MATLAB\R2010b\extern\include"
+	/>
+</VisualStudioPropertySheet>

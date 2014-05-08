@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="MexAdolC_64"
+	>
+	<Tool
+		Name="VCLinkerTool"
+		OutputFile="$(OutDir)\$(ProjectName).mexw64"
+		ModuleDefinitionFile="..\..\src\$(ProjectName)\$(ProjectName)_64.def"
+	/>
+	<UserMacro
+		Name="ADOLC_LIB_DIR"
+		Value="..\..\..\..\AdolC4Win\build64\NoSparse\"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="MEX_LIB_DIR"
+		Value="C:\Program Files\MATLAB\R2010b\extern\lib\win64\microsoft"
+	/>
+	<UserMacro
+		Name="MEXADC_BUILD_DIR"
+		Value="..\..\build64"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="MEXADC_TEMP_DIR"
+		Value="temp64"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>

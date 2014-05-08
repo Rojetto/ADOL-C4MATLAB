@@ -1,0 +1,2 @@
+LIBRARY madLiescalar.mexw64
+EXPORTS mexFunction 

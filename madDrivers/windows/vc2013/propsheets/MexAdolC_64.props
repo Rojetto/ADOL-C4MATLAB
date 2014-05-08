@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <ADOLC_LIB_DIR>..\..\..\..\AdolC4Win\build64\NoSparse\</ADOLC_LIB_DIR>
+    <MEX_LIB_DIR>C:\Program Files\MATLAB\R2010b\extern\lib\win64\microsoft</MEX_LIB_DIR>
+    <MEXADC_BUILD_DIR>..\..\build64</MEXADC_BUILD_DIR>
+    <MEXADC_TEMP_DIR>temp64</MEXADC_TEMP_DIR>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir>$(MEXADC_BUILD_DIR)\</OutDir>
+    <IntDir>$(MEXADC_TEMP_DIR)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <TargetExt>.mexw64</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <OutputFile>$(OutDir)$(ProjectName).mexw64</OutputFile>
+      <ModuleDefinitionFile>..\..\src\$(ProjectName)\$(ProjectName)_64.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="ADOLC_LIB_DIR">
+      <Value>$(ADOLC_LIB_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MEX_LIB_DIR">
+      <Value>$(MEX_LIB_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MEXADC_BUILD_DIR">
+      <Value>$(MEXADC_BUILD_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MEXADC_TEMP_DIR">
+      <Value>$(MEXADC_TEMP_DIR)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

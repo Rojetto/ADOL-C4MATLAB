@@ -1,0 +1,2 @@
+LIBRARY madLiebracket.mexw64
+EXPORTS mexFunction 
