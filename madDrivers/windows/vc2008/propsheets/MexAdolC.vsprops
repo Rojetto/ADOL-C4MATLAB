@@ -24,10 +24,10 @@
 	/>
 	<UserMacro
 		Name="ADOLC_INCLUDE_DIR"
-		Value="..\..\..\..\AdolC4Win\src\ADOL-C\include"
+		Value="..\..\..\..\..\AdolC4Win\trunk\src\ADOL-C\include"
 	/>
 	<UserMacro
 		Name="MEX_INCLUDE_DIR"
-		Value="C:\Program Files\MATLAB\R2010b\extern\include"
+		Value="C:\Program Files (x86)\MATLAB\R2013a\extern\include"
 	/>
 </VisualStudioPropertySheet>

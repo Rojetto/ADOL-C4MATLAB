@@ -1,8 +1,8 @@
 % ====================================================
 % 32 Bit or 64 Bit Matlab
 % ====================================================
-% MatlabBit = '32bit';
-MatlabBit = '64bit';
+MatlabBit = '32bit';
+%MatlabBit = '64bit';
 
 
 % ====================================================
@@ -33,7 +33,7 @@ Compiler{2} = 'C:/Programme/MinGW/MinGW/bin/g++.exe';
 % Example:
 % IncDir{1} = '..\..\AdolC4Win\src\ADOL-C\include;..\..\AdolC4Win\windows\vc2008\stdint';
 % =====================================================
-IncDir{1} = '..\..\AdolC4Win\src\ADOL-C\include;..\..\AdolC4Win\windows\vc2008\stdint';
+IncDir{1} = '..\..\..\AdolC4Win\trunk\src\ADOL-C\include;..\..\..\AdolC4Win\trunk\windows\vc2008\stdint';
 IncDir{2} = '../../../AdolC4Win/ADOL-C';
 
 
@@ -47,7 +47,7 @@ IncDir{2} = '../../../AdolC4Win/ADOL-C';
 % required here, e.g.
 % LibDir{0} = C:/Programme/MinGW/MinGW/lib
 % =====================================================
-LibDir{1} = '..\..\AdolC4Win\build64\NoSparse';
+LibDir{1} = '..\..\..\AdolC4Win\trunk\build32\DebugNoSparse';
 LibDir{2} = '../../../AdolC4Win/windows/build C:/Programme/MinGW/MinGW/lib';
 
 

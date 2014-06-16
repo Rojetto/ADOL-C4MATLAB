@@ -1,0 +1,60 @@
+\documentclass[11pt,twoside]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{swdoku}        
+\usepackage{makeidx} 
+
+
+
+\oddsidemargin3cm
+\addtolength{\oddsidemargin}{4cm}
+\evensidemargin2cm
+\addtolength{\evensidemargin}{4cm}
+\topmargin2cm
+\textwidth16cm
+\addtolength{\textwidth}{-4cm}
+\textheight29.7cm
+\addtolength{\textheight}{-2\topmargin}
+\addtolength{\textheight}{-\headheight}
+\addtolength{\textheight}{-\headsep}
+\addtolength{\textheight}{-\footskip}
+\hoffset-1in
+\voffset-1in
+\parindent0em 
+
+
+
+\input{swdoku_commands.tex}
+
+
+\begin{document}
+
+
+\begin{titlepage}
+\vspace*{2cm}
+{ \normalsize
+{\bf \huge ADOLC4Matlab}\\[8 ex]
+{\bf \Large MATLAB Class-Library for \\ Automatic Differentiation}\\[20 ex]
+{\Large Jan Winkler}\\[3 ex]
+{\Large Institut für Regelungs- und Steuerungstheorie}\\[3ex]
+{\Large Technische Universität Dresden}\\[3ex]
+{\Large July, 2014}}
+\end{titlepage} 
+
+
+\pagestyle{plain}   
+\pagenumbering{roman}
+\tableofcontents
+      
+\pagestyle{headings}
+
+
+\include{f_madFunction}
+
+
+
+\end{document}
+
