@@ -1,0 +1,75 @@
+% Template für Funktionsdokumentation
+
+
+% Hier den Namen der Funktion eintrage
+\Reference{madforward}
+
+
+% Kurzbeschreibung (1 Satz)
+\begin{Purpose}
+Calculates the scaled Taylor coefficients of the image path.
+\end{Purpose}
+
+
+% Funktionsdeklaration mit Argumenten und Rückgabewerten
+\begin{Synopsis}
+Z = madforward(TapeId, d, keep, X)
+\end{Synopsis}
+
+
+% Detaillierte Beschreibung
+\begin{Description}
+This function calculates the scaled Taylor coefficients $\mathbf{z}_i$ ($i=0,\ldots,d)$ of the image path 
+\begin{equation*}
+\mathbf{z}(t) = \mathbf{F}(\mathbf{x}(t)) = \mathbf{z}_0 + \mathbf{z}_1 t + \mathbf{z}_2 t^2 + \ldots + \mathbf{z}_d t^d + \mathcal{O}(t^d)
+\end{equation*}
+of the function $\mathbf{F}$ represented by the tape with the tape number \texttt{TapeId}. The \texttt{n} $\times$ \texttt{d} matrix \texttt{X} contains the Taylor coefficients $\mathbf{x}_i$ ($i=0,\ldots,d$) of the path 
+\begin{equation*}
+\mathbf{x}(t) = \mathbf{x}_0 + \mathbf{x}_1 t \mathbf{x}_2 t^2 + \ldots + \mathbf{x}_d t^d + \mathcal{O}(t^d)
+\end{equation*}
+with \texttt{n} the number of independent variables of the function and \texttt{d} the number of derivatives of $\mathbf{x}(t)$. The flag \texttt{keep} determines how many derivatives are internally stored for the use of the reverse mode. The following must hold: $1 \leq \mathtt{keep} \leq \mathtt{d}+1$. The function returns a $\mathtt{m} \times \mathtt{d}+1$ matrix containing the Taylor coefficients $\mathbf{z}_i$ ($i=0,\ldots,d$) of the image path with \texttt{m} the number of dependent variables.
+
+Keep in mind that the Taylor coefficients of the paths are defined as follows:
+\begin{equation*}
+\mathbf{x}_k = \frac{1}{k!}\pdiff{^k}{t^k}\mathbf{x}(t) \qquad \mathbf{z}_k = \frac{1}{k!}\pdiff{^k}{t^k}\mathbf{z}(t) \qquad k = 0, \ldots, d.
+\end{equation*}
+\end{Description}
+
+
+% Aufrufbeispiele mit Ergebnissen
+\begin{Examples}
+It is assumed that the function
+\begin{equation*}
+\mathbf{y} = 
+\begin{pmatrix}
+x_1^2x_2 + x_1\cos(x_2)\\
+x_2^2\sin(x_1) + x_2x_1^2
+\end{pmatrix}
+\end{equation*}
+is represented by the tape with the number \texttt{TapeId}. If one has $x_1(0) = 3, \dot x_1(0) = -3, \ddot x_1(0) = -6$ and $x_2(0) = 4, \dot x_1(0) = 4, \ddot x_1(0) = 8$ and one wants to calculate $\mathbf{z}_0, \mathbf{z}_1, \mathbf{z}_2$ one has to do the following:
+\begin{verbatim}
+X = [3 4; -3 4; -3 4]';
+Z = madforward(TapeId, 2, 2, X)
+Z = 34.0391 -24.9574 -54.3516
+    38.2579  16.0355  67.1720
+\end{verbatim}
+\end{Examples}
+
+
+% Einschränkungen, die bei der Nutzung zu berücksichtigen sind
+%\begin{Limitations}
+%\end{Limitations}
+
+
+% Verweis auf andere Funktionen, die für die Nutzung dieser
+% wichtig sein könnten
+\begin{Seealso}
+madTapeCreate, madTapeOpen, madTapeClose, madReverse
+\end{Seealso}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "AdolC4MatlabDoc"
+%%% End: 
