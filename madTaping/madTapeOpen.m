@@ -36,6 +36,8 @@ if (nargin == 0)
     return;
 elseif (nargin == 1)
     BaseFileName = varargin{1};
+else
+    error('Incorrect number of input arguments!');
 end
 
 if (isempty(MaxAssignedTapeId))

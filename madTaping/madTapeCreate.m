@@ -1,18 +1,19 @@
-function TapeId = madTapeCreate(n, m, keep, FuncFileName);
+function TapeId = madTapeCreate(varargin)
 
-% TapeId = madTapeCreate(n, m, keep, FuncFileName.m)
+% TapeId = madTapeCreate(n, m, keep, FuncFileName)
+% TapeId = madTapeCreate(n, m, keep, FuncFileName, ToolChain)
 %
 % Creates an Adol-C tape of the function y = f(x)
 % where f is a mapping f : R^n -> R^m, i.e.
 % y is a m x 1 column vector and x is a n x 1 column
 % vector. The function must be specified in a file
 % with the name FuncFileName.m using syntax of
-% programming language c. The n elements of x must
+% programming language C. The n elements of x must
 % be referred to by x[0]...x[n-1] and the m elements
 % y must be referred to by y[0]...y[n-1] within
-% this function.
+% this file.
 %
-% TapeFactory generates a intermediate c++ source code
+% madTapeCreate generates an intermediate c++ source code
 % file named FuncFileName.cpp which is than automatically
 % compiled to TapeFactory_FuncFileName.exe which is than
 % executed so the tapes are generated. The generated tapes
@@ -25,14 +26,42 @@ function TapeId = madTapeCreate(n, m, keep, FuncFileName);
 % the mad-functions madForwad, madReverse, madJacobian,
 % madClose, ... to refer to the tape.
 %
-% See also: madTapeOpen, madTapeClose
+% The function needs a file madTapingSettings.m in which settings
+% for several compilers and targets are defined. Open this file
+% and adapt it to your local environment.
+%
+% The second call syntax of the command is equal to the first one
+% except that the toolchain is explicitely determined in the 
+% parameter ToolChain, i.e. it needs not to be selected interactively
+% during run of the function. ToolChain is an integer determing
+% the compiler as defined in the file madTapingSettings.m
+%
+% See also: madTapeOpen, madTapeClose, madTapingSettings.m
 
-% (c) 2010-2012 
+% (c) 2010-2014 
 % Carsten Friede, Jan Winkler
 % Institut für Regelungs- und Steuerungstheorie
 % TU Dresden
 % Jan.Winkler@tu-dresden.de
 
+% TODO:
+% Auch ermöglichen, das Tape an einer expliziten Stelle zu erstellen
+
+
+if (nargin == 4)
+    n             = varargin{1};
+    m             = varargin{2};
+    keep          = varargin{3};
+    FuncFileName  = varargin{4};
+elseif (nargin == 5)
+    n                 = varargin{1};
+    m                 = varargin{2};
+    keep              = varargin{3};
+    FuncFileName      = varargin{4};
+    selectedToolchain = varargin{5};
+else
+    error('Incorrect number of input arguments!');
+end
 
 
 % Some global settings for this file
@@ -73,7 +102,6 @@ BaseFileName = FuncFileName;
 indM = strfind(BaseFileName, '.m');
 if (isempty(indM))
     error(sprintf('File %s is not a m-file!', FuncFileName));
-    return;
 end
 
 BaseFileName = BaseFileName(1:indM-1);
@@ -88,7 +116,6 @@ ExeFileName    = ['TapeFactory_', BaseFileName, '.exe'];
 fid            = fopen(FuncFileName, 'rt');
 if (fid < 3)
     error(sprintf('Function file with name %s could not be opened!', FuncFileName));
-    return;
 end
 
 % FuncToBeTaped= fscanf(fid,'%s');  % einfachste Möglichkeit schreibt aber
@@ -163,13 +190,14 @@ end
 
 % Auswahl des zu verwendenden Compilers
 % =====================================
-clc
-fprintf('==============================================================\n')
-fprintf('Please select a compiler to generate a tape building EXE file!\n\n')
-fprintf('\t (1) Visual C++ - cl.exe\n\n')
-fprintf('\t (2) MinGW - gcc (NOT SUPPORTED YET) \n\n\n')
-selectedToolchain = 1;
-selectedToolchain = input('Your Choice? [1]: ');
+if ~exist('selectedToolchain','var')
+    clc
+    fprintf('==============================================================\n')
+    fprintf('Please select a compiler to generate a tape building EXE file!\n\n')
+    fprintf('\t (1) Visual C++ - cl.exe\n\n')
+    fprintf('\t (2) MinGW - gcc (NOT SUPPORTED YET) \n\n\n')
+    selectedToolchain = input('Your Choice? [1]: ');
+end
 
 
 % Befehlsstring für Compiler bauen
