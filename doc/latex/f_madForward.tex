@@ -2,7 +2,7 @@
 
 
 % Hier den Namen der Funktion eintrage
-\Reference{madforward}
+\Reference{madForward}
 
 
 % Kurzbeschreibung (1 Satz)
@@ -13,7 +13,7 @@ Calculates the scaled Taylor coefficients of the image path.
 
 % Funktionsdeklaration mit Argumenten und Rückgabewerten
 \begin{Synopsis}
-Z = madforward(TapeId, d, keep, X)
+Z = madForward(TapeId, d, keep, X)
 \end{Synopsis}
 
 
@@ -49,7 +49,7 @@ x_2^2\sin(x_1) + x_2x_1^2
 is represented by the tape with the number \texttt{TapeId}. If one has $x_1(0) = 3, \dot x_1(0) = -3, \ddot x_1(0) = -6$ and $x_2(0) = 4, \dot x_1(0) = 4, \ddot x_1(0) = 8$ and one wants to calculate $\mathbf{z}_0, \mathbf{z}_1, \mathbf{z}_2$ one has to do the following:
 \begin{verbatim}
 X = [3 4; -3 4; -3 4]';
-Z = madforward(TapeId, 2, 2, X)
+Z = madForward(TapeId, 2, 2, X)
 Z = 34.0391 -24.9574 -54.3516
     38.2579  16.0355  67.1720
 \end{verbatim}
