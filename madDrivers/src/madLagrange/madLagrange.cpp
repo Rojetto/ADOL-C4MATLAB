@@ -53,6 +53,9 @@ void cleanup(void)
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
  * *****	Aufruf in MATLAB: L = madLagrange(TapeID, X, u)		    	*****
+ * *****					  [L, M] = madLagrange(TapeId, X, u)		*****
+ * *****					  [L, M, C] = madLagrange(TapeId, X, u)		*****
+ * *****					  [L, M, C, VM] = madLagrange(TapeId, X, u)	*****
  * *****																*****
  * **************************************************************************
  */
@@ -62,14 +65,15 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	double* pL;					// Zeiger auf die Rückgabematrix
 	double* pC;					// Zeiger auf die Rückgabematrix
 	double* pM;					// Zeiger auf die Rückgabematrix
-	double* pVM;					// Zeiger auf die Rückgabematrix
+	double* pVM;				// Zeiger auf die Rückgabematrix
 	double* pX;					// Zeiger auf die Matrix für Taylor-Koeff.
 								// der unabh. Variablen
 	double* u;                  // Zeiger auf die Matrix der äußeren Kräfte
 	
-	MexADCTagType TapeID;				// Tape-Kennzeichner
-	int n;								// Anzahl der unabh. Variablen
-	int m;								// Anzahl der abh. Variablen
+	MexADCTagType TapeID;		// Tape-Kennzeichner
+	int n;						// Anzahl der unabh. Variablen
+	int m;						// Anzahl der abh. Variablen
+	int dimq;					// Dimension von generalisierten Koordinaten q; dimq = n/2
 
 
 	//	Array mit Informationen zum Tape (siehe AdolC\taping.c, Funktion tapestats())
@@ -95,6 +99,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	n = TapeInfo[0];
 	m = TapeInfo[1];
 
+	dimq = n/2;
+
 	if ( m!=1 )
     {
        mexErrMsgIdAndTxt(MEXADC_ErrId(TapeMismatch),  
@@ -106,17 +112,17 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
 
 	// Äußere Kräfte u
-	if (!madCheckDim1c(prhs, MEXAD_IN_u, n/2, "u")) return;
+	if (!madCheckDim1c(prhs, MEXAD_IN_u, dimq, "u")) return;
     u = mxGetPr(prhs[MEXAD_IN_u]);
    
 		// Rückgabe
 	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(n, 1, mxREAL);
 	pL = mxGetPr(plhs[MEXAD_OUT_L]);
-	plhs[MEXAD_OUT_M] = mxCreateDoubleMatrix(n/2, n/2, mxREAL);
+	plhs[MEXAD_OUT_M] = mxCreateDoubleMatrix(dimq, dimq, mxREAL);
 	pM = mxGetPr(plhs[MEXAD_OUT_M]);
-	plhs[MEXAD_OUT_C] = mxCreateDoubleMatrix(n/2, 1, mxREAL);
+	plhs[MEXAD_OUT_C] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
 	pC = mxGetPr(plhs[MEXAD_OUT_C]);
-	plhs[MEXAD_OUT_VM] = mxCreateDoubleMatrix(n/2, 1, mxREAL);
+	plhs[MEXAD_OUT_VM] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
 	pVM = mxGetPr(plhs[MEXAD_OUT_VM]);
 
 	//	Aufruf der Berechnungsprozedur
@@ -135,45 +141,44 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		};
 	};
 
-	double** pHb = myalloc2(n/2, n/2);			// Hesseteilmatrix B
-	double** pHi = myalloc2(n/2, n/2);			// inverse Hesseteilmatrix D
-	double** pMh = myalloc2(n/2, n/2);
-	double* pZw = myalloc(n/2);					// Zwischenergebnis
-	matrix <double> pHd(n/2,n/2);				// Hesseteilmatrix D
+	double** pHb = myalloc2(dimq, dimq);			// Hesseteilmatrix B
+	double** pHi = myalloc2(dimq, dimq);			// inverse Hesseteilmatrix D
+	double** pMh = myalloc2(dimq, dimq);
+	double* pZw = myalloc(dimq);					// Zwischenergebnis
+	matrix <double> pHd(dimq,dimq);					// Hesseteilmatrix D
 	bool xyz;
 	
-	// Initialisierung von Zwischenwerten
-	pZw[0] = 0;									
-	
-	for (int i = 0 ; i < n/2; i++)
+	// Initialisierung von Zwischenwerten									
+	for (int i = 0 ; i < dimq; i++)
 	{
-		pL[i+n/2] = 0;
+		pZw[i] = 0;
+		pL[i+dimq] = 0;
 	}
 
 	// Einlesen der Hesseteilmatrix D 
-	for (int i = 0; i < n/2; i++)				
+	for (int i = 0; i < dimq; i++)				
 	{
-		for (int j = 0; j < n/2; j++)
+		for (int j = 0; j < dimq; j++)
 		{
-			pHd.setvalue(i,j,pH[i+n/2][j+n/2]);
+			pHd.setvalue(i,j,pH[i+dimq][j+dimq]);
 		}
 	}
 	
 	// Einlesen der Hesseteilmatrix B
-	for (int i = 0; i < n/2; i++)				
+	for (int i = 0; i < dimq; i++)				
 	{
-		for (int j = 0; j < n/2; j++)
+		for (int j = 0; j < dimq; j++)
 		{
-			pHb[i][j] = pH[i][j+n/2];
+			pHb[i][j] = pH[i][j+dimq];
 		}
 	}
 
 	if(n==2)
 	{
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			pL[i] = pX[i+n/2];
-			pL[i+n/2] = (pow(pH[1][1],-1))*(pJ[0][0] - pH[0][1]*pX[1] + u[0]);
+			pL[i] = pX[i+dimq];
+			pL[i+dimq] = (pow(pH[1][1],-1))*(pJ[0][0] - pH[0][1]*pX[1] + u[0]);
 		}
 
 		pM[0]=pH[1][1];
@@ -181,64 +186,64 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		pVM[0]=pJ[0][1];
 	}
 
-	// Invertierung der Hesseteilmatrix D
 	else
 	{
+		// Invertierung der Hesseteilmatrix D
 		pHd.invert();
 	
 	
 		// Speichern der invertierten Matrix in pHi
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			for (int j = 0; j < n/2; j++)
+			for (int j = 0; j < dimq; j++)
 			{
 				pHd.getvalue(i,j,pHi[i][j],xyz);
 			}
 		}
 
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			for (int j = 0; j < n/2; j++)
+			for (int j = 0; j < dimq; j++)
 			{
-				pMh[i][j] = pH[i+n/2][j+n/2];
+				pMh[i][j] = pH[i+dimq][j+dimq];
 			}
 		}
 
-		madMatrix2Vector(pMh, pM, n/2, n/2);
+		madMatrix2Vector(pMh, pM, dimq, dimq);
 	       
 		// Berechnung von (d^2)L/((dq)(dq_punkt))*(dq_punkt)
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			for (int j = 0; j < n/2; j++)
+			for (int j = 0; j < dimq; j++)
 			{
-				pZw[i] = pZw[i] + pHb[j][i]*pX[j+n/2];
+				pZw[i] += pHb[j][i]*pX[j+dimq];
 			}
 		}
 	
 		// Berechnung von C(q,dq)
-		for (int j = 0; j < n/2; j++)
+		for (int j = 0; j < dimq; j++)
 		{
-			pC[j] = -(pC[j] + (pJ[0][j] - pZw[j]));			
+			pC[j] = pZw[j] - pJ[0][j];
 		}
 
 		// Verallgemeinerten Momente
-		for (int j = 0; j < n/2; j++)
+		for (int j = 0; j < dimq; j++)
 		{
-			pVM[j] = pJ[0][j+n/2];			
+			pVM[j] = pJ[0][j+dimq];			
 		}
 
 		// q_punkt
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			pL[i] = pX[i+n/2];
+			pL[i] = pX[i+dimq];
 		}
 
 		// Berechnung von q_2punkt
-		for (int i = 0; i < n/2; i++)				
+		for (int i = 0; i < dimq; i++)				
 		{
-			for (int j = 0; j < n/2; j++)
+			for (int j = 0; j < dimq; j++)
 			{
-				pL[i+n/2] = pL[i+n/2] + pHi[i][j]*(pJ[0][j] - pZw[j] + u[j]);			//u[j] besteht aus der Summe der äußeren Kräfte und den Dissipationskräften
+				pL[i+dimq] += pHi[i][j] * (pJ[0][j] - pZw[j] + u[j]);			//u[j] besteht aus der Summe der äußeren Kräfte und den Dissipationskräften
 			}
 		}
 	}
