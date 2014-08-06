@@ -120,7 +120,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
     
 	// Rückgabe
-	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(n_F, d+1, mxREAL);
+	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(n_F, m_H*(d+1), mxREAL);
 	ptrOutput = mxGetPr(plhs[MEXAD_OUT_L]);
 
 	
@@ -138,16 +138,27 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	else
 	{
-       mexErrMsgIdAndTxt(MEXADC_ErrId(TapeMismatch),  
-       "The number of dependent variables of h must be 1!");
+		double*** pL = myalloc3(m_H, n_F, d+1);
+		double** pL2 = myalloc2(n_F, m_H*(d + 1));
 
-	   double*** pL = myalloc3(m_H, n_F, d+1);
+		lie_gradient(TapeID_F, TapeID_H, n_F, m_H, pX, d, pL);
+	   
+		// 3 dimensionale Array in 2 dimenisionales Array packen
+		for (int i = 0; i < m_H; i++)
+		{
+			for (int j = 0; j < n_F; j++)
+			{
+				for (int k = 0; k < d + 1; k++)
+				{
+					pL2[j][i+k*(m_H)] = pL[i][j][k];
+				};
+			};
+		};
 
-	   lie_gradient(TapeID_F, TapeID_H, n_F, m_H, pX, d, pL);
+		madMatrix2Vector(pL2, ptrOutput, n_F, m_H*(d+1));
 
-	   //madMatrix3Vector(pL, ptrOutput, m_H, n_F, d+1);
-
-	   myfree3(pL);
+		myfree3(pL);
+		myfree2(pL2);
 	}
     return;   
 } 
