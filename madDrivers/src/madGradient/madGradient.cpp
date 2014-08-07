@@ -61,6 +61,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	
 	MexADCTagType TapeID;				// Tape-Kennzeichner
 	int n;								// Anzahl der unabh. Variablen
+	int m;								// Anzahl der abh. Variablen
 
 
 	//	Array mit Informationen zum Tape (siehe AdolC\taping.c, Funktion tapestats())
@@ -84,6 +85,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
     //	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
 	tapestats(TapeID, TapeInfo);
 	n = TapeInfo[0];
+	m = TapeInfo[1];
 
 	// X
 	if (!madCheckDim1c(prhs, MEXAD_IN_X, n, "X")) return;
@@ -94,7 +96,16 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	pG = mxGetPr(plhs[MEXAD_OUT_G]);
 
 	//	Aufruf der Berechnungsprozedur
-	gradient(TapeID, n, pX, pG);
+	if (m == 1)
+	{
+		gradient(TapeID, n, pX, pG);
+	}
+	else
+	{
+		mexErrMsgIdAndTxt(MEXADC_ErrId(TapeMismatch),
+		"The number of dependent variables must be 1! Use madJacobian instead!");
+	}
+		
 
     return;   
 }
