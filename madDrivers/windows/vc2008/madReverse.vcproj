@@ -163,7 +163,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\propsheets\MexAdolC.vsprops;.\propsheets\MexAdolC_32.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -234,7 +234,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			InheritedPropertySheets=".\propsheets\MexAdolC.vsprops;.\propsheets\MexAdolC_64.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"

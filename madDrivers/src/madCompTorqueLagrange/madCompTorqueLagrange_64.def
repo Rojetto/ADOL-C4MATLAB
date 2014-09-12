@@ -1,0 +1,2 @@
+LIBRARY madCompTorqueLagrange.mexw64
+EXPORTS mexFunction 

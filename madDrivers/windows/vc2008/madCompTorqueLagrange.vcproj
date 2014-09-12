@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="madLagrange"
-	ProjectGUID="{3A164C6A-0420-40B0-A880-075F16C9E776}"
-	RootNamespace="madLagrange"
+	Name="madCompTorqueLagrange"
+	ProjectGUID="{A9AE38F7-7742-4A8A-9725-28F92663F110}"
+	RootNamespace="madCompTorqueLagrange"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;madLagrange_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;madCompTorqueLagrange_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;madLagrange_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;madCompTorqueLagrange_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -318,11 +318,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\madHelpers\madHelpers.cpp"
+				RelativePath="..\..\src\madCompTorqueLagrange\madCompTorqueLagrange.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\madLagrange\madLagrange.cpp"
+				RelativePath="..\..\src\madHelpers\madHelpers.cpp"
 				>
 			</File>
 		</Filter>
@@ -336,7 +336,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\madLagrange\matrix_h"
+				RelativePath="..\..\src\madCompTorqueLagrange\matrix_h"
 				>
 			</File>
 		</Filter>

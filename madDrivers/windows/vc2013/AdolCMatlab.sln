@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madForward", "madForward.vcxproj", "{98A650F2-D692-4E00-BFA2-134E78A3002F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madGradient", "madGradient.vcxproj", "{5B0A46B2-2A03-4A33-AF25-3693BBEA4EC5}"
@@ -28,6 +30,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madLieScalar", "madLieScalar.vcxproj", "{10EE627B-0A40-4FF4-B413-714CD221EA3E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madLieBracket", "madLieBracket.vcxproj", "{B951F06C-4BC8-4563-AB1E-EA9F8191FFBF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madCompTorqueLagrange", "madCompTorqueLagrange.vcxproj", "{A9AE38F7-7742-4A8A-9725-28F92663F110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -208,6 +212,18 @@ Global
 		{B951F06C-4BC8-4563-AB1E-EA9F8191FFBF}.Release|Win32.Build.0 = Release|Win32
 		{B951F06C-4BC8-4563-AB1E-EA9F8191FFBF}.Release|x64.ActiveCfg = Release|x64
 		{B951F06C-4BC8-4563-AB1E-EA9F8191FFBF}.Release|x64.Build.0 = Release|x64
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|Win32.Build.0 = Debug|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|x64.ActiveCfg = Debug|x64
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Debug|x64.Build.0 = Debug|x64
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Win32.ActiveCfg = Release|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Win32.Build.0 = Release|Win32
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.ActiveCfg = Release|x64
+		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

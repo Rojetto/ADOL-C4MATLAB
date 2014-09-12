@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\madHelpers\madHelpers.cpp">
+    <ClCompile Include="..\..\src\madCompTorqueLagrange\madCompTorqueLagrange.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\madReverse\madReverse.cpp">
+    <ClCompile Include="..\..\src\madHelpers\madHelpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,5 +26,10 @@
     <ClInclude Include="..\..\src\madHelpers\madHelpers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\madCompTorqueLagrange\matrix_h">
+      <Filter>Headerdateien</Filter>
+    </None>
   </ItemGroup>
 </Project>
