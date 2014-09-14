@@ -1,4 +1,4 @@
-// madCompTorqueLagrange.cpp
+// madCompTorqueControl.cpp
 
 
 // Benötigte Header und Namensräume
@@ -18,11 +18,7 @@ using namespace std;
 #define MEXAD_IN_ref		4
 
 // Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
-#define MEXAD_OUT_L			0
-#define MEXAD_OUT_U			1
-#define MEXAD_OUT_M			2
-#define MEXAD_OUT_C			3
-#define MEXAD_OUT_VM		4
+#define MEXAD_OUT_U			0
 
 
 // wird nach dem 1.Aufruf auf true gesetzt
@@ -48,28 +44,20 @@ void cleanup(void)
 }
 
 
-/* **************************************************************************************************
- * *****	Übergabeteil / Gateway-Routine														*****
- * *****	==============================														*****
- * *****																						*****
- * *****	Programmeinsprungpunkt																*****
- * *****																						*****
- * *****	Aufruf in MATLAB: L = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)					*****
- * *****					  [L, U] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)			*****
- * *****					  [L, U, M] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)			*****
- * *****					  [L, U, M, C] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)		*****
- * *****					  [L, U; M, C, VM] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
- * *****																						*****
- * **************************************************************************************************
+/* **************************************************************************************
+ * *****	Übergabeteil / Gateway-Routine											*****
+ * *****	==============================											*****
+ * *****																			*****
+ * *****	Programmeinsprungpunkt													*****
+ * *****																			*****
+ * *****	Aufruf in MATLAB: U = madCompTorqueControl(TapeID, X, Kp, Kd, ref)		*****
+ * *****																			*****
+ * **************************************************************************************
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
 	// Variablendefinitionen für die Verwendung 
-	double* pL;					// Zeiger auf die Rückgabematrix
 	double* pU;					// Vektor der Stellmomente
-	double* pC;					// Zeiger auf die Rückgabematrix
-	double* pM;					// Zeiger auf die Rückgabematrix
-	double* pVM;				// Zeiger auf die Rückgabematrix
 	double* pX;					// Zeiger auf die Matrix für Taylor-Koeff.
 								// der unabh. Variablen
 	double* Kp;					// Zeiger auf der Verstärkungsmatrix Kp
@@ -135,16 +123,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
    
 	// Rückgabe
-	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(n, 1, mxREAL);
-	pL = mxGetPr(plhs[MEXAD_OUT_L]);
 	plhs[MEXAD_OUT_U] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
 	pU = mxGetPr(plhs[MEXAD_OUT_U]);
-	plhs[MEXAD_OUT_M] = mxCreateDoubleMatrix(dimq, dimq, mxREAL);
-	pM = mxGetPr(plhs[MEXAD_OUT_M]);
-	plhs[MEXAD_OUT_C] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
-	pC = mxGetPr(plhs[MEXAD_OUT_C]);
-	plhs[MEXAD_OUT_VM] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
-	pVM = mxGetPr(plhs[MEXAD_OUT_VM]);
 
 	//	Aufruf der Berechnungsprozedur
 
@@ -173,7 +153,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	for (int i = 0 ; i < dimq; i++)
 	{
 		pZw[i] = 0;
-		pL[i+dimq] = 0;
 	}
 
 	// Einlesen der Hesseteilmatrix D 
@@ -196,24 +175,13 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	if(n==2)
 	{
-		pM[0] = pH[1][1];
-		pC[0] = pJ[0][0] - pH[0][1] * pX[1];
-		pVM[0] = pJ[0][1];
-		
-		pU[0] = pH[1][1]*( pRef[2] + pKd[0][0]*( pRef[1]-pX[1] ) + pKp[0][0]*( pRef[0]-pX[0] ) ) + pC[0];
-		
-		for (int i = 0; i < dimq; i++)				
-		{
-			pL[i] = pX[i+dimq];
-			pL[i+dimq] = (pow(pH[1][1],-1))*(pJ[0][0] - pH[0][1]*pX[1] + pU[0]);
-		}
+		pU[0] = pH[1][1]*( pRef[2] + pKd[0][0]*( pRef[1]-pX[1] ) + pKp[0][0]*( pRef[0]-pX[0] ) );
 	}
 
 	else
 	{
 		// Invertierung der Hesseteilmatrix D
 		pHd.invert();
-	
 	
 		// Speichern der invertierten Matrix in pHi
 		for (int i = 0; i < dimq; i++)				
@@ -231,8 +199,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 				pMh[i][j] = pH[i+dimq][j+dimq];
 			}
 		}
-
-		madMatrix2Vector(pMh, pM, dimq, dimq);
 	       
 		// Berechnung von (d^2)L/((dq)(dq_punkt))*(dq_punkt)
 		for (int i = 0; i < dimq; i++)				
@@ -243,24 +209,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 			}
 		}
 	
-		// Berechnung von C(q,dq)
-		for (int j = 0; j < dimq; j++)
-		{
-			pC[j] = pZw[j] - pJ[0][j];
-		}
-
-		// Verallgemeinerten Momente
-		for (int j = 0; j < dimq; j++)
-		{
-			pVM[j] = pJ[0][j+dimq];			
-		}
-
-		// q_punkt
-		for (int i = 0; i < dimq; i++)				
-		{
-			pL[i] = pX[i+dimq];
-		}
-
 
 		// Berechnung der Stellmomente (Computed Torque)
 		double* pKddqKpq = myalloc(dimq);
@@ -279,20 +227,10 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 			{
 				pU[i] += pMh[i][j]*(pRef[j+n] + pKddqKpq[j]);
 			}
-			pU[i] += pC[i];
+			pU[i] += pZw[i] - pJ[0][i];
 		}
 
 		myfree(pKddqKpq);
-
-
-		// Berechnung von q_2punkt
-		for (int i = 0; i < dimq; i++)				
-		{
-			for (int j = 0; j < dimq; j++)
-			{
-				pL[i+dimq] += pHi[i][j] * (pJ[0][j] - pZw[j] + pU[j]);			//u[j] besteht aus der Summe der äußeren Kräfte und den Dissipationskräften
-			}
-		}
 	}
 
 	//Freigabe des Speichers

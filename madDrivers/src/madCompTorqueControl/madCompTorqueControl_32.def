@@ -1,0 +1,2 @@
+LIBRARY madCompTorqueControl.mexw32
+EXPORTS mexFunction 
