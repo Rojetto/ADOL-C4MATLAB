@@ -128,8 +128,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	//	Aufruf der Berechnungsprozedur
 
-	double** pJ = myalloc2(m, n);
-	jacobian(TapeID, m, n, pX, pJ);
+	double* pG = myalloc(n);
+	gradient(TapeID, n, pX, pG);
 
 	double** pH = myalloc2(n, n);				// pH = (A B; C D)
 	hessian(TapeID, n, pX, pH);
@@ -227,14 +227,14 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 			{
 				pU[i] += pMh[i][j]*(pRef[j+n] + pKddqKpq[j]);
 			}
-			pU[i] += pZw[i] - pJ[0][i];
+			pU[i] += pZw[i] - pG[i];
 		}
 
 		myfree(pKddqKpq);
 	}
 
 	//Freigabe des Speichers
-	myfree2(pJ);
+	myfree(pG);
 	myfree2(pH);
 	myfree2(pHb);
 	myfree2(pHi);

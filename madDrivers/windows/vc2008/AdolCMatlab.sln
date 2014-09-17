@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madLieBracket", "madLieBrac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madCompTorqueLagrange", "madCompTorqueLagrange.vcproj", "{A9AE38F7-7742-4A8A-9725-28F92663F110}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madCompTorqueControl", "madCompTorqueControl.vcproj", "{B4936C22-E8A6-4475-9672-C300C96E2C0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -160,6 +162,14 @@ Global
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Win32.Build.0 = Release|Win32
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.ActiveCfg = Release|x64
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.Build.0 = Release|x64
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Debug|Win32.Build.0 = Debug|Win32
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Debug|x64.ActiveCfg = Debug|x64
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Debug|x64.Build.0 = Debug|x64
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Release|Win32.ActiveCfg = Release|Win32
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Release|Win32.Build.0 = Release|Win32
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Release|x64.ActiveCfg = Release|x64
+		{B4936C22-E8A6-4475-9672-C300C96E2C0D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

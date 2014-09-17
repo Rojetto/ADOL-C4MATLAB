@@ -148,8 +148,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	//	Aufruf der Berechnungsprozedur
 
-	double** pJ = myalloc2(m, n);
-	jacobian(TapeID, m, n, pX, pJ);
+	double* pG = myalloc(n);
+	gradient(TapeID, n, pX, pG);
 
 	double** pH = myalloc2(n, n);				// pH = (A B; C D)
 	hessian(TapeID, n, pX, pH);
@@ -197,15 +197,15 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	if(n==2)
 	{
 		pM[0] = pH[1][1];
-		pC[0] = pJ[0][0] - pH[0][1] * pX[1];
-		pVM[0] = pJ[0][1];
+		pC[0] = pG[0] - pH[0][1] * pX[1];
+		pVM[0] = pG[1];
 		
 		pU[0] = pH[1][1]*( pRef[2] + pKd[0][0]*( pRef[1]-pX[1] ) + pKp[0][0]*( pRef[0]-pX[0] ) ) + pC[0];
 		
 		for (int i = 0; i < dimq; i++)				
 		{
 			pL[i] = pX[i+dimq];
-			pL[i+dimq] = (pow(pH[1][1],-1))*(pJ[0][0] - pH[0][1]*pX[1] + pU[0]);
+			pL[i + dimq] = (pow(pH[1][1], -1))*(pG[0] - pH[0][1] * pX[1] + pU[0]);
 		}
 	}
 
@@ -246,13 +246,13 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		// Berechnung von C(q,dq)
 		for (int j = 0; j < dimq; j++)
 		{
-			pC[j] = pZw[j] - pJ[0][j];
+			pC[j] = pZw[j] - pG[j];
 		}
 
 		// Verallgemeinerten Momente
 		for (int j = 0; j < dimq; j++)
 		{
-			pVM[j] = pJ[0][j+dimq];			
+			pVM[j] = pG[j + dimq];
 		}
 
 		// q_punkt
@@ -290,13 +290,13 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		{
 			for (int j = 0; j < dimq; j++)
 			{
-				pL[i+dimq] += pHi[i][j] * (pJ[0][j] - pZw[j] + pU[j]);			//u[j] besteht aus der Summe der äußeren Kräfte und den Dissipationskräften
+				pL[i + dimq] += pHi[i][j] * (pG[j] - pZw[j] + pU[j]);
 			}
 		}
 	}
 
 	//Freigabe des Speichers
-	myfree2(pJ);
+	myfree(pG);
 	myfree2(pH);
 	myfree2(pHb);
 	myfree2(pHi);

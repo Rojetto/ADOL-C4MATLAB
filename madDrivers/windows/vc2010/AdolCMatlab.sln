@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madLieBracket", "madLieBrac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madCompTorqueLagrange", "madCompTorqueLagrange.vcxproj", "{A9AE38F7-7742-4A8A-9725-28F92663F110}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "madCompTorqueControl", "madCompTorqueControl.vcxproj", "{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -222,6 +224,18 @@ Global
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|Win32.Build.0 = Release|Win32
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.ActiveCfg = Release|x64
 		{A9AE38F7-7742-4A8A-9725-28F92663F110}.Release|x64.Build.0 = Release|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|Win32.Build.0 = Debug|Win32
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|x64.ActiveCfg = Debug|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Debug|x64.Build.0 = Debug|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|Mixed Platforms.Build.0 = Release|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|Win32.ActiveCfg = Release|Win32
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|Win32.Build.0 = Release|Win32
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|x64.ActiveCfg = Release|x64
+		{5A1EB2F1-77E5-4531-BAB1-35E0335513E8}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
