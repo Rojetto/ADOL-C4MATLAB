@@ -1,4 +1,4 @@
-// madLiebracket.cpp
+// madLieBracket.cpp
 
 
 // Benötigte Header und Namensräume
@@ -52,7 +52,7 @@ void cleanup(void)
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
  * *****																			*****
- * *****	Aufruf in MATLAB: L = madLiebracket(TapeID_F, TapeId_G, X, d)			*****
+ * *****	Aufruf in MATLAB: L = madLieBracket(TapeID_F, TapeId_G, X, d)			*****
  * *****																			*****
  * **************************************************************************************
  */

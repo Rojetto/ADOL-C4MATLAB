@@ -1,4 +1,4 @@
-// madLiegradient.cpp
+// madLieGradient.cpp
 
 
 // Benötigte Header und Namensräume
@@ -52,7 +52,7 @@ void cleanup(void)
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
  * *****																			*****
- * *****	Aufruf in MATLAB: L = madLiegradient(TapeID_F, TapeId_H, X, d)				*****
+ * *****	Aufruf in MATLAB: L = madLieGradient(TapeID_F, TapeId_H, X, d)			*****
  * *****																			*****
  * **************************************************************************************
  */

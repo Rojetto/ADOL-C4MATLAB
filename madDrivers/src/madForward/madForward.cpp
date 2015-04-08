@@ -1,4 +1,4 @@
-// madforward.cpp : Definiert die exportierten Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
+// madForward.cpp : Definiert die exportierte Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
 
 
 // Benötigte Header und Namensräume
@@ -50,7 +50,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: Y = madforward(TapeID, d, keep, X)    	*****
+ * *****	Aufruf in MATLAB: Y = madForward(TapeID, d, keep, X)    	*****
  * *****																*****
  * **************************************************************************
  */

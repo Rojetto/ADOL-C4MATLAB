@@ -209,7 +209,8 @@ clear LibDir;
 if (~exist(sprintf('%s.m', OptionFileName)))
     error('Option-file %s.m not found!', OptionFileName);
 else
-    run(OptionFileName);
+    feval(OptionFileName)
+    %run(OptionFileName);
 end
 
 % Compiler-Datei
@@ -221,25 +222,25 @@ switch(selectedToolchain)
         fprintf('\n\n\t +--- Visual Studio C++ compiler had been selected ---+\n');
         
         % Quelltext
-        CC = [CC, ' "/Od /EHsc /Tp ', SourceFileName];
+        CC = ['"', CC, '"', ' "/Od /EHsc /Tp ', SourceFileName];
         
         % Include-Pfad (prüfen, ob mehrere Pfade angegeben wurden, dann
         % müssen diese einzeln mit dem fileDirectory zusammengefügt
         % und dem Compiler übergeben werden
         ind = strfind(IncDir{selectedToolchain}, ';');
         if isempty(ind) % 1 include Verzeichnis
-            CC = [CC, ' /I ', fileDirectory, '\', IncDir{selectedToolchain}];
+            CC = [CC, ' /I "', fileDirectory, '\', IncDir{selectedToolchain}, '"'];
         else % mehrere include-Verzeichnisse
             IncDirs = IncDir{selectedToolchain};
             ind = [0 ind length(IncDirs)+1];
             NumIncDirs = length(ind)-1;
             for i = 1:1:NumIncDirs                
-                CC = [CC, ' /I ', fileDirectory, '\', IncDirs(ind(i)+1:ind(i+1)-1)];
+                CC = [CC, ' /I "', fileDirectory, '\', IncDirs(ind(i)+1:ind(i+1)-1), '"'];
             end
         end
         
         % Angabe der Objektreferenzen für die DLL
-        CC = [CC, ' /link /LIBPATH ', fileDirectory, '\', LibDir{selectedToolchain}, '\', LibName{1},'"'];
+        CC = [CC, ' /link /LIBPATH "', fileDirectory, '\', LibDir{selectedToolchain}, '\', LibName{1},'""'];
                 
     case 2
         % Auswahl angeben
@@ -279,9 +280,9 @@ disp('============================================');
 disp('Trying to compile with command: ');
 disp(CC);
 if (MatlabBit == '64bit')
-	[res, msg] = system([fileDirectory ,'\BuildRunVC.bat c ', CC, ' 64']);
+	[res, msg] = system(['"', fileDirectory ,'\BuildRunVC.bat" c ', CC, ' 64']);
 else
-	[res, msg] = system([fileDirectory ,'\BuildRunVC.bat c ', CC, ' 32']);
+	[res, msg] = system(['"', fileDirectory ,'\BuildRunVC.bat" c ', CC, ' 32']);
 end
 disp(sprintf('\nCompilation exited with Code %d \n\n', res));
 disp(msg);
@@ -362,9 +363,9 @@ copyfile([fileDirectory, '\' , LibDir{1}, '\adolc.dll'], 'adolc.dll');
 %end
 disp(sprintf('Executing tape factory %s', ExeFileName));
 if (MatlabBit == '64bit')
-	[res, msg] = system([fileDirectory, '\BuildRunVC.bat r ', fileDirectory, '\', LibDir{1}, ' ', ExeFileName, ' 64']);
+	[res, msg] = system(['"', fileDirectory, '\BuildRunVC.bat" r "', fileDirectory, '\', LibDir{1}, '" ', ExeFileName, ' 64']);
 else
-	[res, msg] = system([fileDirectory, '\BuildRunVC.bat r ', fileDirectory, '\', LibDir{1}, ' ', ExeFileName, ' 32']);
+	[res, msg] = system(['"', fileDirectory, '\BuildRunVC.bat" r "', fileDirectory, '\', LibDir{1}, '" ', ExeFileName, ' 32']);
 end
 disp(sprintf('\nCreation of tapes exited with Code %d\n\n', res));
 disp(msg);

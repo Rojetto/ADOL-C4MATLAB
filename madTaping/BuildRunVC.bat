@@ -30,13 +30,26 @@ REM ****************************************************************************
 
 set MODE=%1
 set VCPATH=%2
-set BITS=%4
 
 if "%MODE%" == "c" GOTO Uebersetzen
 if "%MODE%" == "r" GOTO Ausfuehren
 
 
 :Uebersetzen
+
+set CARGS=%~3
+REM set CARGS=%CARGS:~1,-1%
+
+
+:schleife
+shift
+if [%~4] == [] goto ende
+set CARGS=%CARGS% %3
+goto schleife
+:ende
+
+set BITS=%3
+
 REM Setzen der Umgebungsvariablen wie in Visual Studio 2008 Eingabeaufforderung
 if "%BITS%" == "64" ( call %VCPATH%\VC\vcvarsall.bat amd64 ) else  ( call %VCPATH%\VC\vcvarsall.bat x86 )
 
@@ -45,8 +58,7 @@ REM Speichern in lokale Variablen und Entfernen der Anführungszeichen in %3
 REM andernfalls werden die Argumente für cl.exe nicht erkannt
 
 if "%BITS%" == "64" ( set CC=%VCPATH%\VC\bin\amd64\cl.exe ) else ( set CC=%VCPATH%\VC\bin\cl.exe )
-set CARGS=%3
-set CARGS=%CARGS:~1,-1%
+
 
 echo %CC%
 

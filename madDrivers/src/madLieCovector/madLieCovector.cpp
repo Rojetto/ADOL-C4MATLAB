@@ -1,4 +1,4 @@
-// madLiecovectorv.cpp
+// madLieCovector.cpp
 
 
 // Benötigte Header und Namensräume
@@ -52,7 +52,7 @@ void cleanup(void)
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
  * *****																			*****
- * *****	Aufruf in MATLAB: L = madLiecovectorv(TapeID_F, TapeId_H, X, d)			*****
+ * *****	Aufruf in MATLAB: L = madLieCovector(TapeID_F, TapeId_H, X, d)			*****
  * *****																			*****
  * **************************************************************************************
  */

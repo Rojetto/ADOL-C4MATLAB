@@ -1,4 +1,4 @@
-// madLiegemischt.cpp
+// madLieMixedDerivative.cpp
 
 
 // Benötigte Header und Namensräume
@@ -47,15 +47,15 @@ void cleanup(void)
 
 
 
-/* ******************************************************************************************
- * *****	Übergabeteil / Gateway-Routine												*****
- * *****	==============================												*****
- * *****																				*****
- * *****	Programmeinsprungpunkt														*****
- * *****																				*****
- * *****	Aufruf in MATLAB: L = madLiegemischt(TapeID_F, TapeID_FG, TapeId_H, X, d)	*****
- * *****																				*****
- * ******************************************************************************************
+/* **************************************************************************************************
+ * *****	Übergabeteil / Gateway-Routine														*****
+ * *****	==============================														*****
+ * *****																						*****
+ * *****	Programmeinsprungpunkt																*****
+ * *****																						*****
+ * *****	Aufruf in MATLAB: L = madLieMixedDerivative(TapeID_F, TapeID_FG, TapeId_H, X, d)	*****
+ * *****																						*****
+ * **************************************************************************************************
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 

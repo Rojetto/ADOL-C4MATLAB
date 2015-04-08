@@ -1,4 +1,4 @@
-// madforward.cpp : Definiert die exportierten Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
+// madReverse.cpp
 
 
 // Benötigte Header und Namensräume
@@ -49,7 +49,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: Z = madrevers(TapeID, d, u)    			*****
+ * *****	Aufruf in MATLAB: Z = madReverse(TapeID, d, u)    			*****
  * *****																*****
  * **************************************************************************
  */

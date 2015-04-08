@@ -10,10 +10,9 @@
 % werden müssen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 madTapingPath = '..\madTaping';
-madDriversPath = '..\madDrivers\build64';
+madDriversPath = '..\madDrivers\build32';
 addpath(madTapingPath);
 addpath(madDriversPath);
-% copyfile([madDriversPath, '\adolc.dll'], 'adolc.dll');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,7 +23,7 @@ addpath(madDriversPath);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % n = 2, d = 1, keep = 0
-TapeId = madTapeCreate(2, 1, 0, 'XSinXY.m');
+TapeId = madTapeCreate(2, 1, 0, 'XSinXY.m',1);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -48,7 +48,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: I = madInverse(X,n)					    	*****
+ * *****	Aufruf in MATLAB: I = madInverse(X,n)					    *****
  * *****																*****
  * **************************************************************************
  */

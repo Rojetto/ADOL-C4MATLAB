@@ -1,4 +1,4 @@
-// madfunction.cpp 
+// madFunction.cpp 
 
 
 // Benötigte Header und Namensräume
@@ -48,7 +48,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: Y = madforward(TapeID, d, keep, X)    	*****
+ * *****	Aufruf in MATLAB: Y = madFunction(TapeID, X)    			*****
  * *****																*****
  * **************************************************************************
  */
