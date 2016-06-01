@@ -16,13 +16,14 @@ int main(int argc, char *argv[])
 	int m    = //%m%;
 	int keep = //%keep%;
 	// =====================\n');
-
+	
+	
+	adouble* x = new adouble[n];
+	adouble* y = new adouble[m];
+	
 	
 	// =====================
 	trace_on(TapeNumber, keep);
-
-	adouble* x = new adouble[n];
-	adouble* y = new adouble[m];
 
 	for (int i = 0; i < n; i++) x[i] <<= i;
 

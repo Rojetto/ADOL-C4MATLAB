@@ -1,2 +1,0 @@
-LIBRARY madFunction.mexw64
-EXPORTS mexFunction 

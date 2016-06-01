@@ -5,7 +5,7 @@
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
-#include "adolc_lie.h"
+#include "adolc\lie\drivers.h"
 
 
 using namespace std;
@@ -121,28 +121,28 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	if(m_H == 1)
 	{
-	// Rückgabe
-	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(d+1, 1, mxREAL);
-	ptrOutput = mxGetPr(plhs[MEXAD_OUT_L]);
+		// Rückgabe
+		plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(d+1, 1, mxREAL);
+		ptrOutput = mxGetPr(plhs[MEXAD_OUT_L]);
 
-		//	Aufruf der Berechnungsprozedur
-	lie_scalar(TapeID_F, TapeID_H, n_F, pX, d, ptrOutput);
+			//	Aufruf der Berechnungsprozedur
+		lie_scalar(TapeID_F, TapeID_H, n_F, pX, d, ptrOutput);
 	}
 
 	else
 	{
-	// Rückgabe
-	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(m_H, d+1, mxREAL);
-	ptrOutput = mxGetPr(plhs[MEXAD_OUT_L]);
+		// Rückgabe
+		plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(m_H, d+1, mxREAL);
+		ptrOutput = mxGetPr(plhs[MEXAD_OUT_L]);
 
-	//	Aufruf der Berechnungsprozedur
-	double** pL = myalloc2(m_H, d+1);
+		//	Aufruf der Berechnungsprozedur
+		double** pL = myalloc2(m_H, d+1);
 
-	lie_scalar(TapeID_F, TapeID_H, n_F, m_H, pX, d, pL);
+		lie_scalar(TapeID_F, TapeID_H, n_F, m_H, pX, d, pL);
 	
-	madMatrix2Vector(pL, ptrOutput, m_H, d+1);
+		madMatrix2Vector(pL, ptrOutput, m_H, d+1);
     
-	myfree2(pL);
+		myfree2(pL);
 	}
 	
 	

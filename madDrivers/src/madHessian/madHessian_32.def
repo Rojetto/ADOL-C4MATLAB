@@ -1,2 +1,0 @@
-LIBRARY madHessian.mexw32
-EXPORTS mexFunction 

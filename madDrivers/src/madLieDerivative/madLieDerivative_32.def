@@ -1,2 +1,0 @@
-LIBRARY madLieDerivative.mexw32
-EXPORTS mexFunction 

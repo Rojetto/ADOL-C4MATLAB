@@ -5,7 +5,9 @@
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
-#include "matrix_h"
+extern "C" {
+	#include "matrixlib.h"
+}
 
 using namespace std;
 
@@ -48,7 +50,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: I = madInverse(X,n)					    *****
+ * *****	Aufruf in MATLAB: I = madInverse(X,n)					    	*****
  * *****																*****
  * **************************************************************************
  */
@@ -86,30 +88,32 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	madVector2Matrix(ptrInput, pX, n, n);
 
 	double** pI = myalloc2(n, n);
-	matrix <double> pIi(n,n);				
-	bool xyz;
+
+	matError err;
+	matMatrix *pIi = matMatrixCreateZero(n, n, &err);
 
 	// Einlesen der Matrix 
 	for (int i = 0; i < n; i++)				
 	{
 		for (int j = 0; j < n; j++)
 		{
-			pIi.setvalue(i,j,pX[i][j]);
+			matMatrixValSet(pIi, i, j, pX[i][j]);
 		}
 	}
 
 	// Invertierung der Matrix
-	pIi.invert();
-	
-	
+	pIi = matMatrixCreateInv(pIi, &err);
+
 	// Speichern der invertierten Matrix in pI
 	for (int i = 0; i < n; i++)				
 	{
 		for (int j = 0; j < n; j++)
 		{
-			pIi.getvalue(i,j,pI[i][j],xyz);
+			pI[i][j]=matMatrixValGet(pIi, i, j, &err);
 		}
 	}
+
+	matMatrixDelete(&pIi);
 	
 	madMatrix2Vector(pI, ptrOutput, n, n);
     

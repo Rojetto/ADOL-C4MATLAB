@@ -385,17 +385,11 @@ for i = 1:1:NumTapeFiles
     [res, msg] = system(sprintf('%s %s %s', CopyCommand, TapeFile, TapeFileNamed{i}));
 
     if (res ~= 0)
-        if i==3
-            fid = fopen( TapeFileNamed{i}, 'wt' );
-            fclose(fid);
-            warning('Rename of Tape %s to %s failed! Empty file created instead!', TapeFile, TapeFileNamed{i});
-        else
-            disp(msg);
-            error('Rename of Tape %s to %s failed! Refer to the error message displayed above for more details!', TapeFile, TapeFileNamed{i});
-            return;
-            %else
-            %    disp(sprintf('Tape %s successfully renamed to %s', TapeFile, TapeFileNamed));
-        end
+        disp(msg);
+        error('Rename of Tape %s to %s failed! Refer to the error message displayed above for more details!', TapeFile, TapeFileNamed{i});
+        return;
+    %else
+    %    disp(sprintf('Tape %s successfully renamed to %s', TapeFile, TapeFileNamed));
     end
 end
 

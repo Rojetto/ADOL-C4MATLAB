@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <ADOLC_HOME_DIR>..\..\..\..\Adol-C</ADOLC_HOME_DIR>
+    <ADOLC_INCLUDE_DIR>$(ADOLC_HOME_DIR)\ADOL-C\include</ADOLC_INCLUDE_DIR>
+    <MATLAB_HOME_DIR>E:\Franke\Software\MATLAB\R2007b</MATLAB_HOME_DIR>
+    <MEX_INCLUDE_DIR>$(MATLAB_HOME_DIR)\extern\include</MEX_INCLUDE_DIR>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Platform)'=='Win32' ">
+      <PropertyGroup Label="UserMacros">
+        <ADOLC_LIB_DIR>$(ADOLC_HOME_DIR)\MSVisualStudio\v14\nosparse</ADOLC_LIB_DIR>
+        <MEX_LIB_DIR>$(MATLAB_HOME_DIR)\extern\lib\win32\microsoft</MEX_LIB_DIR>
+        <MEXADC_BUILD_DIR>..\..\build32</MEXADC_BUILD_DIR>
+        <MEXADC_TEMP_DIR>temp32</MEXADC_TEMP_DIR>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(Platform)'=='x64' ">
+      <PropertyGroup Label="UserMacros">
+        <ADOLC_LIB_DIR>$(ADOLC_HOME_DIR)\MSVisualStudio\v14\x64\nosparse</ADOLC_LIB_DIR>
+        <MEX_LIB_DIR>$(MATLAB_HOME_DIR)\extern\lib\win64\microsoft</MEX_LIB_DIR>
+        <MEXADC_BUILD_DIR>..\..\build64</MEXADC_BUILD_DIR>
+        <MEXADC_TEMP_DIR>temp64</MEXADC_TEMP_DIR>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ADOLC_INCLUDE_DIR);$(MEX_INCLUDE_DIR);..\..\src\madHelpers;..\..\src\MatrixLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MATLAB_MEX_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4267;4273</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile Condition=" '$(Platform)'=='Win32' ">$(OutDir)$(ProjectName).mexw32</OutputFile>
+      <OutputFile Condition=" '$(Platform)'=='x64' ">$(OutDir)$(ProjectName).mexw64</OutputFile>
+      <AdditionalDependencies>libmex.lib;libmx.lib;libmat.lib;AdolC.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MEX_LIB_DIR);$(ADOLC_LIB_DIR);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>$(IntDir)$(ProjectName).pdb</ProgramDatabaseFile>
+      <AdditionalOptions>/EXPORT:"mexFunction"</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <Command>del $(OutDir)$(ProjectName).exp
+del $(OutDir)$(ProjectName).lib
+copy /Y "$(ADOLC_LIB_DIR)\adolc.dll" "$(MEXADC_BUILD_DIR)\adolc.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <OutDir>$(MEXADC_BUILD_DIR)\</OutDir>
+    <IntDir>$(MEXADC_TEMP_DIR)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Platform)'=='Win32' ">
+      <PropertyGroup>
+        <TargetExt>.mexw32</TargetExt>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(Platform)'=='x64' ">
+      <PropertyGroup>
+        <TargetExt>.mexw64</TargetExt>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <BuildMacro Include="ADOLC_HOME_DIR">
+      <Value>$(ADOLC_HOME_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ADOLC_INCLUDE_DIR">
+      <Value>$(ADOLC_INCLUDE_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ADOLC_LIB_DIR">
+      <Value>$(ADOLC_LIB_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MATLAB_HOME_DIR">
+      <Value>$(MATLAB_HOME_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MEX_INCLUDE_DIR">
+      <Value>$(MEX_INCLUDE_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MEX_LIB_DIR">
+      <Value>$(MEX_LIB_DIR)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

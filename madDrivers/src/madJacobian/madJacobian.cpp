@@ -33,11 +33,11 @@ static mxArray *persistent_array_ptr = NULL;
 // Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
-void cleanup(void) 
+void cleanup(void)
 {
-   mexPrintf("%s unloaded\n", __FILE__);
-   mxDestroyArray(persistent_array_ptr);
-   MexInitialized = false;
+	mexPrintf("%s unloaded\n", __FILE__);
+	mxDestroyArray(persistent_array_ptr);
+	MexInitialized = false;
 }
 
 
@@ -52,60 +52,60 @@ void cleanup(void)
  * *****																*****
  * **************************************************************************
  */
-void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
-{ 
+void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
+{
 	// Variablendefinitionen für die Verwendung 
 	double* ptrOutput;					// Zeiger auf die Rückgabematrix
 	double* pX;							// Zeiger auf die Matrix für Taylor-Koeff.
-										// der unabh. Variablen
-	
+	// der unabh. Variablen
+
 	MexADCTagType TapeID;				// Tape-Kennzeichner
-    int m;								// Anzahl der abh. Variablen
+	int m;								// Anzahl der abh. Variablen
 	int n;								// Anzahl der unabh. Variablen
 
 	//	Array mit Informationen zum Tape (siehe AdolC\taping.c, Funktion tapestats())
 	size_t TapeInfo[STAT_SIZE];
-           
+
 
 	// Initialisierung der MEX-Funktion
- 	if (!MexInitialized) 
+	if (!MexInitialized)
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
-    
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+
+	// Prüfen der Anzahl der Eingabe- und Rückgabeargumente
 	madCheckNumInputs(nrhs, 2, 2);
 	madCheckNumOutputs(nlhs, 0, 1);
-            
 
-    // Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
-	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId")) return; 
-	TapeID     = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]); 
-    
-    //	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
+
+	// Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId")) return;
+	TapeID = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]);
+
+	//	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
 	tapestats(TapeID, TapeInfo);
 	n = TapeInfo[0];
-    m = TapeInfo[1];  
+	m = TapeInfo[1];
 
 	// X
 	if (!madCheckDim1c(prhs, MEXAD_IN_X, n, "X")) return;
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
-    
+
 	// Rückgabe
 	plhs[MEXAD_OUT_J] = mxCreateDoubleMatrix(m, n, mxREAL);
 	ptrOutput = mxGetPr(plhs[MEXAD_OUT_J]);
 
-	
+
 
 	//	Aufruf der Berechnungsprozedur
 	double** pJ = myalloc2(m, n);
 
 	jacobian(TapeID, m, n, pX, pJ);
-	
+
 	madMatrix2Vector(pJ, ptrOutput, m, n);
-    
+
 	myfree2(pJ);
 
-    return;   
+	return;
 }
 
 

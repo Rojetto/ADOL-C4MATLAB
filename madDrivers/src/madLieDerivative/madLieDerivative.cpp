@@ -1,7 +1,5 @@
-// madLieDerivative
-
-
-// Benötigte Header
+// MexADC_forward.cpp : Definiert die exportierten Funktionen für die DLL-Anwendung.
+//
 #include "mex.h"
 #include "adolc/adolc.h"
 #include "madHelpers.h"
@@ -23,15 +21,11 @@ static bool    MexInitialized = false;
 // signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
 static bool    TapesWritten   = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
-* Polling auf das Tape zu umgehen
-*/
+//Für Matlab, damit Datei persistent wird
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
-// Muss hier so definiert werden, da mexAtExit einen Aufruf mit
-// void parameterliste erwartet!
+
 void cleanup(void) 
 {
    mexPrintf("%s unloaded\n", __FILE__);
@@ -40,17 +34,12 @@ void cleanup(void)
 }
 
 
-
-/* **************************************************************************************
-* *****	Übergabeteil / Gateway-Routine												*****
-* *****	==============================												*****
-* *****																				*****
-* *****	Programmeinsprungpunkt														*****
-* *****																				*****
-* *****	Aufruf in MATLAB: L = madLieDerivative(TapeID_F, TapeId_H, X, d)			*****
-* *****																				*****
-* **************************************************************************************
-*/
+// Aufruf in Matlab: L = mexCalcLieDeriv(Tape_F, Tape_H, x, d)
+// Tape_F -> Id of tape of function f(x)
+// Tape_H -> Id of tape of function h(x)
+// x -> x
+// d -> Highest Lie-derivative requested
+// L -> Lie derivatives 0 ... d
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray*prhs[] )
      
 { 

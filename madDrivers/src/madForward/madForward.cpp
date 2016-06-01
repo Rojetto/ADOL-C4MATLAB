@@ -1,10 +1,11 @@
-// madForward.cpp : Definiert die exportierte Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
+// madforward.cpp : Definiert die exportierten Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
 
 
 // Benötigte Header und Namensräume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
+#include "adolc\lie\drivers.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ using namespace std;
 static bool    MexInitialized = false;   
 
 // signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
-static bool    TapesWritten   = false;   
+//static bool    TapesWritten   = false;   
 
 /* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
@@ -50,7 +51,7 @@ void cleanup(void)
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
  * *****																*****
- * *****	Aufruf in MATLAB: Y = madForward(TapeID, d, keep, X)    	*****
+ * *****	Aufruf in MATLAB: Y = madforward(TapeID, d, keep, X)    	*****
  * *****																*****
  * **************************************************************************
  */

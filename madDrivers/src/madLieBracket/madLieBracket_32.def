@@ -1,2 +1,0 @@
-LIBRARY madLiebracket.mexw32
-EXPORTS mexFunction 

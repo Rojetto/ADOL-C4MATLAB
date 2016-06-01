@@ -1,2 +1,0 @@
-LIBRARY madLiecovector.mexw32
-EXPORTS mexFunction 

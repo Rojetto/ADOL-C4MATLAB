@@ -1,11 +1,11 @@
-// madLieBracket.cpp
+// madLiebracket.cpp
 
 
 // Benötigte Header und Namensräume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
-#include "adolc_lie.h"
+#include "adolc\lie\drivers.h"
 
 
 using namespace std;
@@ -52,7 +52,7 @@ void cleanup(void)
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
  * *****																			*****
- * *****	Aufruf in MATLAB: L = madLieBracket(TapeID_F, TapeId_G, X, d)			*****
+ * *****	Aufruf in MATLAB: L = madLiebracket(TapeID_F, TapeId_G, X, d)			*****
  * *****																			*****
  * **************************************************************************************
  */

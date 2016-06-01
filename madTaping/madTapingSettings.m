@@ -18,7 +18,7 @@ MatlabBit = '32bit';
 % Do NOT use quotes (")!
 % Path may contain spaces!
 % ====================================================
-Compiler{1} = 'C:\Program Files (x86)\Microsoft Visual Studio 9.0';
+Compiler{1} = 'C:\Program Files (x86)\Microsoft Visual Studio 14.0';
 Compiler{2} = 'C:/Programme/MinGW/MinGW/bin/g++.exe';
 
 
@@ -39,8 +39,8 @@ Compiler{2} = 'C:/Programme/MinGW/MinGW/bin/g++.exe';
 % Do NOT use quotes (")!
 % Paths may contain spaces!
 % =====================================================
-IncDir{1} = '..\..\AdolC4Windows\src\ADOL-C\include;..\..\AdolC4Windows\windows\vc2008\stdint';
-IncDir{2} = '../../AdolC4Windows/ADOL-C';
+IncDir{1} = '..\..\ADOL-C\ADOL-C\include';
+IncDir{2} = '../../ADOL-C/ADOL-C';
 
 
 % ====================================================
@@ -56,8 +56,8 @@ IncDir{2} = '../../AdolC4Windows/ADOL-C';
 % Do NOT use quotes (")!
 % Path may contain spaces!
 % =====================================================
-LibDir{1} = '..\..\AdolC4Windows\build32\Debug NoSparse';
-LibDir{2} = '../../../AdolC4Win/windows/build C:/Programme/MinGW/MinGW/lib';
+LibDir{1} = '..\..\ADOL-C\MSVisualStudio\v14\nosparse';
+LibDir{2} = '../../../ADOL-C/windows/build C:/Programme/MinGW/MinGW/lib';
 
 
 % ====================================================

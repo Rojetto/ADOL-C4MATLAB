@@ -60,7 +60,7 @@ bool madCheckDim1r(const mxArray *ptr[], int ind, int nc, const char* const info
 	mwSize NumCols = mxGetN(ptr[ind]);
 	if ( (NumDim != 2) || (NumRows != 1) || (NumCols != nc) )
 	{
-		mexErrMsgIdAndTxt(MEXADC_ErrId(WrongMatrixDim), "Input argument %d (%s) must column-vector with %d rows", ind, info, nc);
+		mexErrMsgIdAndTxt(MEXADC_ErrId(WrongMatrixDim), "Input argument %d (%s) must be a row-vector with %d rows", ind, info, nc);
 		return false;
 	}
 	return true;

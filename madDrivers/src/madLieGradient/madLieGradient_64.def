@@ -1,2 +1,0 @@
-LIBRARY madLiegradient.mexw64
-EXPORTS mexFunction 

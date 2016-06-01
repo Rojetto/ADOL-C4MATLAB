@@ -1,2 +1,0 @@
-LIBRARY madInverse.mexw32
-EXPORTS mexFunction 

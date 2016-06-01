@@ -1,2 +1,0 @@
-LIBRARY madLagrange.mexw32
-EXPORTS mexFunction 

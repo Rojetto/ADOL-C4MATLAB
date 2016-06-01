@@ -1,11 +1,11 @@
-// madLieCovector.cpp
+// madLiecovectorv.cpp
 
 
 // Benötigte Header und Namensräume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
-#include "adolc_lie.h"
+#include "adolc\lie\drivers.h"
 
 
 using namespace std;
@@ -52,7 +52,7 @@ void cleanup(void)
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
  * *****																			*****
- * *****	Aufruf in MATLAB: L = madLieCovector(TapeID_F, TapeId_H, X, d)			*****
+ * *****	Aufruf in MATLAB: L = madLiecovectorv(TapeID_F, TapeId_H, X, d)			*****
  * *****																			*****
  * **************************************************************************************
  */
@@ -133,7 +133,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	//	Aufruf der Berechnungsprozedur
 	double** pL = myalloc2(n_F, d+1);
 
-	lie_covectorv(TapeID_F, TapeID_H, n_F, pX, d, pL);
+	lie_covector(TapeID_F, TapeID_H, n_F, pX, d, pL);
 	
 	madMatrix2Vector(pL, ptrOutput, n_F, d+1);
     

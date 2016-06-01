@@ -5,7 +5,9 @@
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
-#include "matrix_h"
+extern "C" {
+	#include "matrixlib.h"
+}
 
 using namespace std;
 
@@ -142,12 +144,15 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		};
 	};
 
-	double** pHb = myalloc2(dimq, dimq);			// Hesseteilmatrix B
-	double** pHi = myalloc2(dimq, dimq);			// inverse Hesseteilmatrix D
+	double** pHb = myalloc2(dimq, dimq);				// Hesseteilmatrix B
+	double** pHi = myalloc2(dimq, dimq);				// inverse Hesseteilmatrix D
 	double** pMh = myalloc2(dimq, dimq);
-	double* pZw = myalloc(dimq);					// Zwischenergebnis
-	matrix <double> pHd(dimq,dimq);					// Hesseteilmatrix D
-	bool xyz;
+	double* pZw = myalloc(dimq);						// Zwischenergebnis
+	//matrix <double> pHd(dimq,dimq);					
+	//bool xyz;
+	matError err;
+	matMatrix *pHd = matMatrixCreateZero(dimq, dimq, &err);	// Hesseteilmatrix D
+	
 	
 	// Initialisierung von Zwischenwerten									
 	for (int i = 0 ; i < dimq; i++)
@@ -160,7 +165,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	{
 		for (int j = 0; j < dimq; j++)
 		{
-			pHd.setvalue(i,j,pH[i+dimq][j+dimq]);
+			//pHd.setvalue(i,j,pH[i+dimq][j+dimq]);
+			matMatrixValSet(pHd, i, j, pH[i+dimq][j+dimq]);
 		}
 	}
 	
@@ -181,14 +187,16 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	else
 	{
 		// Invertierung der Hesseteilmatrix D
-		pHd.invert();
+		//pHd.invert();
+		pHd = matMatrixCreateInv(pHd, &err);
 	
 		// Speichern der invertierten Matrix in pHi
 		for (int i = 0; i < dimq; i++)				
 		{
 			for (int j = 0; j < dimq; j++)
 			{
-				pHd.getvalue(i,j,pHi[i][j],xyz);
+				//pHd.getvalue(i,j,pHi[i][j],xyz);
+				pHi[i][j]=matMatrixValGet(pHd, i, j, &err);
 			}
 		}
 
@@ -243,6 +251,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 	myfree2(pKp);
 	myfree2(pKd);
+
+	matMatrixDelete(&pHd);
 	
     return;   
 }

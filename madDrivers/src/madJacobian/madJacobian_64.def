@@ -1,2 +1,0 @@
-LIBRARY madJacobian.mexw64
-EXPORTS mexFunction 
