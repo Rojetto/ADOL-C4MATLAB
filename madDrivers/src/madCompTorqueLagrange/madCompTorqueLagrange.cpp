@@ -9,8 +9,6 @@ extern "C" {
 	#include "matrixlib.h"
 }
 
-using namespace std;
-
 
 // Position und Bedeutung der Eingabeparameter der Mex-Funktion (also *prhs[])
 #define MEXAD_IN_TAPE_L		0
@@ -29,9 +27,6 @@ using namespace std;
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
-
-// signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
-static bool    TapesWritten   = false;   
 
 /* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
@@ -56,10 +51,10 @@ void cleanup(void)
  * *****																						*****
  * *****	Programmeinsprungpunkt																*****
  * *****																						*****
- * *****	Aufruf in MATLAB: L = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)					*****
- * *****					  [L, U] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)			*****
- * *****					  [L, U, M] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)			*****
- * *****					  [L, U, M, C] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)		*****
+ * *****	Aufruf in MATLAB:  L               = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
+ * *****					  [L, U]           = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
+ * *****					  [L, U, M]        = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
+ * *****					  [L, U, M, C]     = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
  * *****					  [L, U; M, C, VM] = madCompTorqueLagrange(TapeID, X, Kp, Kd, ref)	*****
  * *****																						*****
  * **************************************************************************************************

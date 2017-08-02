@@ -29,6 +29,8 @@
       <AdditionalIncludeDirectories>$(ADOLC_INCLUDE_DIR);$(MEX_INCLUDE_DIR);..\..\src\madHelpers;..\..\src\MatrixLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MATLAB_MEX_FILE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4267;4273</DisableSpecificWarnings>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <OutputFile Condition=" '$(Platform)'=='Win32' ">$(OutDir)$(ProjectName).mexw32</OutputFile>

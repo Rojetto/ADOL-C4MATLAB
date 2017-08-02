@@ -13,13 +13,9 @@
 // Position und Bedeutung der Rückgabewerte
 #define MEXAD_OUT_L           0
 
-using namespace std;
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
-
-// signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
-static bool    TapesWritten   = false;   
 
 //Für Matlab, damit Datei persistent wird
 static mxArray *persistent_array_ptr = NULL;

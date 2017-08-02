@@ -1,15 +1,13 @@
 // madLagrange.cpp
 
 
-// Benötigte Header und Namensräume
+// Benötigte Header
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
 extern "C" {
 	#include "matrixlib.h"
 }
-
-using namespace std;
 
 
 // Position und Bedeutung der Eingabeparameter der Mex-Funktion (also *prhs[])
@@ -27,9 +25,6 @@ using namespace std;
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
-
-// signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
-static bool    TapesWritten   = false;   
 
 /* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
@@ -195,7 +190,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	else
 	{
 		// Invertierung der Hesseteilmatrix D
-		//pHd.invert();
 		pHd = matMatrixCreateInv(pHd, &err);
 	
 		// Speichern der invertierten Matrix in pHi
@@ -203,7 +197,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		{
 			for (int j = 0; j < dimq; j++)
 			{
-				//pHd.getvalue(i,j,pHi[i][j],xyz);
 				pHi[i][j]=matMatrixValGet(pHd, i, j, &err);
 			}
 		}

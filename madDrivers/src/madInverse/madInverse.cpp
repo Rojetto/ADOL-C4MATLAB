@@ -9,7 +9,6 @@ extern "C" {
 	#include "matrixlib.h"
 }
 
-using namespace std;
 
 
 // Position und Bedeutung der Eingabeparameter der Mex-Funktion (also *prhs[])
@@ -23,9 +22,6 @@ using namespace std;
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
-
-// signalisiert, das die Tapes geschrieben wurden bzw. vorhanden sind
-static bool    TapesWritten   = false;   
 
 /* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
