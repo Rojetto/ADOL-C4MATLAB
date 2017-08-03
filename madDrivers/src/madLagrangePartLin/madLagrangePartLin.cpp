@@ -174,6 +174,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 
 	double** pH = myalloc2(n, n);											// pH = (A B; C D)
 	hessian(TapeID, n, pX, pH);
+	// Optimierung durch direkte Anwendung von hess_vec möglich, siehe Definition von hessian
 
 	for (int i = 0; i < n; i++)												
 	{
