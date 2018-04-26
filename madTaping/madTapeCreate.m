@@ -15,7 +15,7 @@ function TapeId = madTapeCreate(varargin)
 %
 % madTapeCreate generates an intermediate c++ source code
 % file named FuncFileName.cpp which is than automatically
-% compiled to TapeFactory_FuncFileName.exe which is than
+% compiled to TapeFactory_FuncFileName.(mexext) which is than
 % executed so the tapes are generated. The generated tapes
 % do have the names
 % M-Locations_FuncFileName.tap
@@ -38,11 +38,11 @@ function TapeId = madTapeCreate(varargin)
 %
 % See also: madTapeOpen, madTapeClose, madTapingSettings.m
 
-% (c) 2010-2014 
-% Carsten Friede, Jan Winkler
+% (c) 2010-2018 
+% Carsten Friede, Jan Winkler, Mirko Franke
 % Institut für Regelungs- und Steuerungstheorie
 % TU Dresden
-% Jan.Winkler@tu-dresden.de
+% {Jan.Winkler, Mirko.Franke}@tu-dresden.de
 
 % TODO:
 % Auch ermöglichen, das Tape an einer expliziten Stelle zu erstellen
@@ -83,13 +83,6 @@ else
     CopyCommand = 'copy /Y';
 end
 
-% Zu vergebende Tape-Nummer
-% =========================
-DefaultTapeNumber = madTapeOpen() + 1;
-if (isempty(DefaultTapeNumber))
-   DefaultTapeNumber = 1;
-end
-
 % Aktueller Pfad
 % ==============
 p = mfilename('fullpath');
@@ -108,7 +101,7 @@ BaseFileName = BaseFileName(1:indM-1);
 FuncFileName   = [BaseFileName, '.m'];
 SourceFileName = [BaseFileName, '.cpp'];
 ObjectFileName = [BaseFileName, '.o'];
-ExeFileName    = ['TapeFactory_', BaseFileName, '.exe'];
+MexFileName    = ['TapeFactory_', BaseFileName];
 
 
 % Funktion, von der ein Tape erzeugt werden soll, einlesen
@@ -136,8 +129,7 @@ fclose(fid);
 
 % Parameter für das Taping konvertieren und speichern
 % ==================================================
-TapeParameter = {num2str(DefaultTapeNumber),
-                 num2str(n),
+TapeParameter = {num2str(n),
                  num2str(m),
                  num2str(keep)};
 
@@ -163,10 +155,9 @@ while 1
     end
     
     % Suchmuster vergleichen, um Eingabeparameter zu setzen
-    lines{k} = regexprep(lines{k}, '//%TapeNumber%', TapeParameter{1});
-    lines{k} = regexprep(lines{k}, '//%n%',          TapeParameter{2});
-    lines{k} = regexprep(lines{k}, '//%m%',          TapeParameter{3});
-    lines{k} = regexprep(lines{k}, '//%keep%',       TapeParameter{4});
+    lines{k} = regexprep(lines{k}, '//%n%',          TapeParameter{1});
+    lines{k} = regexprep(lines{k}, '//%m%',          TapeParameter{2});
+    lines{k} = regexprep(lines{k}, '//%keep%',       TapeParameter{3});
     lines{k} = regexprep(lines{k}, '// Insertion of function to be taped', FuncToBeTaped);
     k = k+1;
 end
@@ -222,7 +213,7 @@ switch(selectedToolchain)
         fprintf('\n\n\t +--- Visual Studio C++ compiler had been selected ---+\n');
         
         % Quelltext
-        CC = ['"', CC, '"', ' "/Od /EHsc /Tp ', SourceFileName];
+        CC = ['"', CC, '"', ' "/Od /EHsc /D "MATLAB_MEX_FILE" /Tp ', SourceFileName, ' "', fileDirectory, '\..\madDrivers\src\madHelpers\madHelpers.cpp"'];
         
         % Include-Pfad (prüfen, ob mehrere Pfade angegeben wurden, dann
         % müssen diese einzeln mit dem fileDirectory zusammengefügt
@@ -238,9 +229,22 @@ switch(selectedToolchain)
                 CC = [CC, ' /I "', fileDirectory, '\', IncDirs(ind(i)+1:ind(i+1)-1), '"'];
             end
         end
-        
-        % Angabe der Objektreferenzen für die DLL
-        CC = [CC, ' /link /LIBPATH "', fileDirectory, '\', LibDir{selectedToolchain}, '\', LibName{1},'""'];
+		% Matlab include-Verzeichnis zum Bauen von MEX-Funktionen
+		CC = [CC, ' /I "', matlabroot, '\extern\include', '"'];
+		% madHelpers
+		CC = [CC, ' /I "', fileDirectory, '\..\madDrivers\src\madHelpers', '"'];
+		
+		CC = [CC, ' /link /OUT:"', MexFileName, '.', mexext, '" /DLL /MACHINE:X86 /EXPORT:"mexFunction"'];
+		
+		% Angabe der notwendigen Bibliotheken
+		CC = [CC, ' /DYNAMICBASE "', LibName{1},'"'];	% ADOL-C
+		CC = [CC, ' "libmex.lib" "libmx.lib" "libmat.lib"']; % Matlab MEX
+		
+		
+		
+		% Angabe der Objektreferenzen für die libs
+        CC = [CC, ' /LIBPATH:"', fileDirectory, '\', LibDir{selectedToolchain},'"'];	% ADOL-C
+		CC = [CC, ' /LIBPATH:"', matlabroot, '\extern\lib\win32\microsoft', '""'];
                 
     case 2
         % Auswahl angeben
@@ -279,7 +283,9 @@ end
 disp('============================================');
 disp('Trying to compile with command: ');
 disp(CC);
-if (MatlabBit == '64bit')
+[tempstr,maxArraySize]=computer; 
+is64bitComputer=maxArraySize> 2^31;
+if (is64bitComputer)
 	[res, msg] = system(['"', fileDirectory ,'\BuildRunVC.bat" c ', CC, ' 64']);
 else
 	[res, msg] = system(['"', fileDirectory ,'\BuildRunVC.bat" c ', CC, ' 32']);
@@ -350,52 +356,24 @@ if (selectedToolchain == 2)
 
 end
 
+% Löschen von nicht benötigten Dateien
+if (selectedToolchain == 1)
+    delete *.cpp
+    delete *.obj
+    delete *.lib
+    delete *.exp
+end
+
 
 % Ausführung der erzeugten Datei zur Erzeugung der Tapes
 % ======================================================
 
 % zunächst muss die DLL ins aktuelle Arbeitsverzeichnis kopiert werden
-copyfile([fileDirectory, '\' , LibDir{1}, '\adolc.dll'], 'adolc.dll');
-
-%pause(5)
-%if exist(ExeFileName,'file') == 0
-    movefile([BaseFileName,'.exe'],ExeFileName)
-%end
-disp(sprintf('Executing tape factory %s', ExeFileName));
-if (MatlabBit == '64bit')
-	[res, msg] = system(['"', fileDirectory, '\BuildRunVC.bat" r "', fileDirectory, '\', LibDir{1}, '" ', ExeFileName, ' 64']);
-else
-	[res, msg] = system(['"', fileDirectory, '\BuildRunVC.bat" r "', fileDirectory, '\', LibDir{1}, '" ', ExeFileName, ' 32']);
-end
-disp(sprintf('\nCreation of tapes exited with Code %d\n\n', res));
-disp(msg);
-
-if (res ~= 0)
-    error('Creation of tapes failed! Refer to the error message displayed above for more details!');
-    return;
+try
+    copyfile([fileDirectory, '\' , LibDir{1}, '\adolc.dll'], 'adolc.dll');
+catch
+    warning('Could not copy DLL: adolc.dll');
 end
 
-
-
-% Umbenennen der erzeugten Tapes
-% ==============================
-for i = 1:1:NumTapeFiles
-    TapeFile      = strcat(TapePraefix{i}, num2str(DefaultTapeNumber), '.tap');
-    TapeFileNamed{i} = strcat(StaticTapePraefix{i}, BaseFileName, '.tap');
-    [res, msg] = system(sprintf('%s %s %s', CopyCommand, TapeFile, TapeFileNamed{i}));
-
-    if (res ~= 0)
-        disp(msg);
-        error('Rename of Tape %s to %s failed! Refer to the error message displayed above for more details!', TapeFile, TapeFileNamed{i});
-        return;
-    %else
-    %    disp(sprintf('Tape %s successfully renamed to %s', TapeFile, TapeFileNamed));
-    end
-end
-
-disp(sprintf('%s successfully taped to \n %s \n %s \n %s', FuncFileName, TapeFileNamed{1}, TapeFileNamed{2}, TapeFileNamed{3}));
-
-disp(' ');
-
-
+% Öffnen des Tapes
 TapeId = madTapeOpen(BaseFileName);

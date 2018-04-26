@@ -22,10 +22,10 @@ REM ***                      32 bzw. 64										 ***
 REM ***	                                                                     ***
 REM *** Rückgabewerte:  keine                                                ***
 REM ***                                                                      ***
-REM *** (c) 2011-2012                                                        ***
-REM *** Carsten Friede, Jan Winkler                                          ***
+REM *** (c) 2011-2018                                                        ***
+REM *** Carsten Friede, Jan Winkler, Mirko Franke                            ***
 REM *** Institut für Regelungs- und Steuerungstheorie, TU Dresden            ***
-REM *** Jan.Winkler@tu-dresden.de                                            ***
+REM *** {Jan.Winkler, Mirko.Franke}@tu-dresden.de                                            ***
 REM ****************************************************************************
 
 set MODE=%1

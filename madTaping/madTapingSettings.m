@@ -1,16 +1,9 @@
 % ====================================================
-% 32 Bit or 64 Bit Matlab
-% ====================================================
-MatlabBit = '32bit';
-%MatlabBit = '64bit';
-
-
-% ====================================================
 % Path and filename of the compiler to be used
 %
 % For Visual-Studio users: Please do only enter
 % the base path, e.g.
-% c:\Program Files (x86)\Microsoft Visual Studio 9.0
+% c:\Program Files (x86)\Microsoft Visual Studio 14.0
 %
 % Example:
 % Compiler = C:/Programme/Dev-Cpp/bin/g++.exe
@@ -83,7 +76,7 @@ LibName{2} = 'libadolc.lib';
 %
 % E.g. Def{0} = __TEST__;
 % =====================================================
-%Def{1} = 'C:/Programme/MinGW/MinGW/lib';
+%Def{0} = 'C:/Programme/MinGW/MinGW/lib';
 %Def{1} =
 %Def{2} =
 

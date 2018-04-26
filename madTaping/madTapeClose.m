@@ -8,29 +8,22 @@ function result = mexAD_CloseTape(TapeId)
 % ADOLC-Locations_X.tap
 % ADOLC-Operations_X.tap
 % ADOLC-Values_X.tap
+% TapeFactory_X.(mexw32|mexw64)
 %
 % where X is the TapeId.
 %
 % Call madTapeClose('all') to close all opened tapes.
 %
 % The original tapes stored as
-% ADOLC-Locations_FileBaseName.tap
-% ADOLC-Operations_FileBaseName.tap
-% ADOLC-Values_FileBaseName.tap
-%
-% from which 
-% ADOLC-Locations_X.tap
-% ADOLC-Operations_X.tap
-% ADOLC-Values_X.tap
-%
-% have been created are not deleted.
+% TapeFactory_FileBaseName.(mexext)
+% are not deleted.
 % See also: madTapeCreate, madTapeOpen
 
-% (c) 2010-2012 
-% Carsten Friede, Jan Winkler
+% (c) 2010-2018
+% Carsten Friede, Jan Winkler, Mirko Franke
 % Institut für Regelungs- und Steuerungstheorie
 % TU Dresden
-% Jan.Winkler@tu-dresden.de
+% {Jan.Winkler, Mirko.Franke}
 
 % Erst mal nur in den Papierkorb damit
 OldState = recycle('on');
@@ -42,6 +35,8 @@ TapePraefix{1}    = 'ADOLC-Locations_';
 TapePraefix{2}    = 'ADOLC-Operations_';
 TapePraefix{3}    = 'ADOLC-Values_';
 
+TapeFactoryPraefix = 'TapeFactory_';
+
 
 % Löschen aller nummerierten Tapes
 if (strcmp(TapeId, 'all'))
@@ -52,6 +47,11 @@ if (strcmp(TapeId, 'all'))
                 ~isempty(findstr(files(i).name, TapePraefix{3})) )
             delete(files(i).name);
         end
+		if ( regexp(files(i).name, ['TapeFactory_[0-9]+\.', mexext]) )
+			[pn,fn,en]=fileparts(files(3).name);
+			eval(['clear ', fn]);
+            delete(files(i).name);
+        end
     end
 
 % Löschen des Tapes mit der Nummer TapeId
@@ -60,18 +60,20 @@ else
         TapeFile{i} = strcat(TapePraefix{i}, num2str(TapeId),'.tap');
         if (exist(TapeFile{i}))
             delete(TapeFile{i});
-        else    
-            result = -1;
         end
     end
-
-    if (result == 0)
-        disp(sprintf('Tape \n %s \n %s \n %s \nsuccessfully unloaded!', TapeFile{1}, TapeFile{2}, TapeFile{3}));
-        disp(' ');
+	
+	TapeFactoryFile = strcat(TapeFactoryPraefix, num2str(TapeId),'.', mexext);
+	if (exist(TapeFactoryFile))
+		eval(['clear ', TapeFactoryPraefix, num2str(TapeId)]);
+		delete(TapeFactoryFile);
+	else    
+        result = -1;
     end
-
-
+	
+    if (result == 0)
+		disp(sprintf('Tape # %d successfully unloaded!\n', TapeId));
+    end
 end
 
 recycle(OldState);
-
