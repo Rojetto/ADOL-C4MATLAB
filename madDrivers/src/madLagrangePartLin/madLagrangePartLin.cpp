@@ -42,6 +42,7 @@ void cleanup(void)
    MexInitialized = false;
 }
 
+
 void matCreateSubsystem(double** subsystem, double** system, int dim_1, int dim_2, double* dof1, double* dof2)
 {
 	for (int i = 0; i < dim_1; i++)
@@ -53,6 +54,7 @@ void matCreateSubsystem(double** subsystem, double** system, int dim_1, int dim_
 		}
 	}
 }
+
 
 void matMultiplikation(double** result, double** matrixA, double** matrixB, int rowsA, int columnsA, int columnsB)
 {
@@ -68,6 +70,7 @@ void matMultiplikation(double** result, double** matrixA, double** matrixB, int 
 	}
 }
 
+
 void matVecMultiplikation(double* result, double** matrix, double* vector, int rows, int columns)
 {
 	for (int i = 0; i < rows; i++)
@@ -78,6 +81,37 @@ void matVecMultiplikation(double* result, double** matrix, double* vector, int r
 		}
 	}
 }
+
+
+int my_hessian(short tag,
+	int n,
+	double* argument,
+	double** hess)
+{
+	int rc = 3;
+	int i, j;
+	double *v = myalloc1(n);
+	double *w = myalloc1(n);
+	for (i = n / 2; i<n; i++) v[i] = 0;
+	for (i = n / 2; i<n; i++) {
+		v[i] = 1;
+		MINDEC(rc, hess_vec(tag, n, argument, v, w));
+		if (rc < 0) {
+			free((char *)v);
+			free((char *)w);
+			return rc;
+		}
+		for (j = 0; j <= i; j++)
+			hess[j][i] = w[j];
+		v[i] = 0;
+	}
+
+	free((char *)v);
+	free((char *)w);
+	return rc;
+	/* Note that only the lower right triangle of hess is filled */
+}
+
 
 /* ***********************************************************************************
  * *****	Übergabeteil / Gateway-Routine										 *****
@@ -172,17 +206,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	double* pG = myalloc(n);												// Gradient von X
 	gradient(TapeID, n, pX, pG);											// pG_i = dL/dq_i  €R^(10x1)
 
-	double** pH = myalloc2(n, n);											// pH = (A B; C D)
-	hessian(TapeID, n, pX, pH);
-	// Optimierung durch direkte Anwendung von hess_vec möglich, siehe Definition von hessian
-
-	for (int i = 0; i < n; i++)												
-	{
-		for (int j = 0; j <= i - 1; j++)
-		{
-			pH[j][i] = pH[i][j];											// Befüllen der symmetrischen Elemente
-		}
-	}
+	double** pH = myalloc2(n, n);											// pH = (0 B; 0 D)
+	my_hessian(TapeID, n, pX, pH);
 
 	double** pHb	= myalloc2(dimq, dimq);									// Hesseteilmatrix B
 	double** pHi	= myalloc2(dimq, dimq);									// inverse Hesseteilmatrix D

@@ -43,6 +43,36 @@ void cleanup(void)
 }
 
 
+int my_hessian(short tag,
+	int n,
+	double* argument,
+	double** hess) 
+{
+	int rc = 3;
+	int i, j;
+	double *v = myalloc1(n);
+	double *w = myalloc1(n);
+	for (i = n/2; i<n; i++) v[i] = 0;
+	for (i = n/2; i<n; i++) {
+		v[i] = 1;
+		MINDEC(rc, hess_vec(tag, n, argument, v, w));
+		if (rc < 0) {
+			free((char *)v);
+			free((char *)w);
+			return rc;
+		}
+		for (j = 0; j < n; j++)
+			hess[j][i] = w[j];
+		v[i] = 0;
+	}
+
+	free((char *)v);
+	free((char *)w);
+	return rc;
+	/* Note that only the right half of hess is filled */
+}
+
+
 /* **************************************************************************
  * *****	Übergabeteil / Gateway-Routine								*****
  * *****	==============================								*****
@@ -127,16 +157,8 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	double* pG = myalloc(n);
 	gradient(TapeID, n, pX, pG);
 
-	double** pH = myalloc2(n, n);				// pH = (A B; C D)
-	hessian(TapeID, n, pX, pH);
-
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j <= i-1; j++)
-		{
-			pH[j][i] = pH[i][j];
-		};
-	};
+	double** pH = myalloc2(n, n);				// pH = (0 B; 0 D)
+	my_hessian(TapeID, n, pX, pH);
 
 	double** pHb = myalloc2(dimq, dimq);				// Hesseteilmatrix B
 	double** pHi = myalloc2(dimq, dimq);				// inverse Hesseteilmatrix D
