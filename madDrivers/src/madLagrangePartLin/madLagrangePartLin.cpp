@@ -1,7 +1,7 @@
-// madLagrangePartLin.cpp
+ï»¿// madLagrangePartLin.cpp
 
 
-// Benötigte Header
+// BenÃ¶tigte Header
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -17,7 +17,7 @@ extern "C" {
 #define MEXAD_IN_akt		 3
 #define MEXAD_IN_pass		 4
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion	(also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion	(also *plhs[])
 #define MEXAD_OUT_U          0
 #define MEXAD_OUT_L			 1
 #define MEXAD_OUT_M			 2
@@ -26,13 +26,13 @@ extern "C" {
 // wird nach dem 1. Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void) 
@@ -114,7 +114,7 @@ int my_hessian(short tag,
 
 
 /* ***********************************************************************************
- * *****	Übergabeteil / Gateway-Routine										 *****
+ * *****	Ãœbergabeteil / Gateway-Routine										 *****
  * *****	==============================										 *****
  * *****																		 *****
  * *****	Programmeinsprungpunkt												 *****
@@ -125,12 +125,12 @@ int my_hessian(short tag,
  */
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   //...prhs[]: Eingabewerte
 {
-	// Variablendefinitionen für die Verwendung 
+	// Variablendefinitionen fÃ¼r die Verwendung 
 	// Ausgabeparameter
-	double* pU;					// Zeiger auf Rückgabewert (Eingang u)
+	double* pU;					// Zeiger auf RÃ¼ckgabewert (Eingang u)
 
 	// Eingabeparameter
-	double* pX;					// Zeiger auf die Matrix für Taylor-Koeff.
+	double* pX;					// Zeiger auf die Matrix fÃ¼r Taylor-Koeff.
 								// der unabh. Variablen
 	double* v;                  // Zeiger auf den Vektor der Trajektorien
 	double* akt;				// Zeiger auf aktive Freiheitsgrade
@@ -155,16 +155,16 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
 
 
-	// Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+	// PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 5, 5);					//Aus madHelpers...madDrivers/src
 	madCheckNumOutputs(nlhs, 1, 1);					//Aus madHelpers...madDrivers/src
 
 
-	// Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+	// Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId")) return;
 	TapeID = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]);
 
-	//	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
+	//	Anzahl der "n" unabhÃ¤ngigen und "m" abhÃ¤ngigen Variablen des Tapes
 	tapestats(TapeID, TapeInfo);
 	n = TapeInfo[0];
 	m = TapeInfo[1];
@@ -179,7 +179,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	akt = mxGetPr(prhs[MEXAD_IN_akt]);
 	pass = mxGetPr(prhs[MEXAD_IN_pass]);
 
-	// Dimension der aktiven und passiven Koord. abfragen und prüfen.
+	// Dimension der aktiven und passiven Koord. abfragen und prÃ¼fen.
 	dim_akt = mxGetN(prhs[MEXAD_IN_akt]);
 	dim_pass = mxGetN(prhs[MEXAD_IN_pass]);
 	if ((dim_akt + dim_pass != dimq))
@@ -191,12 +191,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	if (!madCheckDim1c(prhs, MEXAD_IN_X, n, "X")) return;
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
 
-	// Äußere Kräfte v einlesen
+	// Ã„uÃŸere KrÃ¤fte v einlesen
 	if (!madCheckDim1c(prhs, MEXAD_IN_v, dim_akt, "v")) return;
 	v = mxGetPr(prhs[MEXAD_IN_v]);
 
-	// Rückgabe
-	plhs[MEXAD_OUT_U] = mxCreateDoubleMatrix(dimq, 1, mxREAL);					// Angabe des Rückgabetyps
+	// RÃ¼ckgabe
+	plhs[MEXAD_OUT_U] = mxCreateDoubleMatrix(dimq, 1, mxREAL);					// Angabe des RÃ¼ckgabetyps
 	pU = mxGetPr(plhs[MEXAD_OUT_U]);
 
 	
@@ -204,7 +204,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	double* pC = myalloc(dimq);
 
 	double* pG = myalloc(n);												// Gradient von X
-	gradient(TapeID, n, pX, pG);											// pG_i = dL/dq_i  €R^(10x1)
+	gradient(TapeID, n, pX, pG);											// pG_i = dL/dq_i  â‚¬R^(10x1)
 
 	double** pH = myalloc2(n, n);											// pH = (0 B; 0 D)
 	my_hessian(TapeID, n, pX, pH);
@@ -220,8 +220,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	double** pM22inv = myalloc2(dim_pass, dim_pass);						// Inverse von M22
 	double** pM11s	= myalloc2(dim_akt, dim_akt);							// M11 strich (aus u = M11s*v + C1s)
 
-	double** pMZ1	= myalloc2(dim_akt, dim_pass);							// Matrix für Zwischenergebnisse	
-	double*  pVZ1	= myalloc(dim_akt);										// Vektor für Zwischenergebnisse
+	double** pMZ1	= myalloc2(dim_akt, dim_pass);							// Matrix fÃ¼r Zwischenergebnisse	
+	double*  pVZ1	= myalloc(dim_akt);										// Vektor fÃ¼r Zwischenergebnisse
 
 	double* pC2		= myalloc(dim_pass);									// Vektor des passiven Systems
 	double* pC1s	= myalloc(dim_akt);										// C1 strich (aus u = M11s*v + C1s)
@@ -255,7 +255,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 	{
 		for (int j = 0; j < dimq; j++)
 		{
-			pHb[i][j] = pH[i][j+dimq];			// Für die Berechnung von C über pZw
+			pHb[i][j] = pH[i][j+dimq];			// FÃ¼r die Berechnung von C Ã¼ber pZw
 		}
 	}
 
@@ -275,7 +275,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 		{
 			for (int j = 0; j < dimq; j++)
 			{
-				pHi[i][j]=matMatrixValGet(pHd, i, j, &err);					// Rücktransformation in double
+				pHi[i][j]=matMatrixValGet(pHd, i, j, &err);					// RÃ¼cktransformation in double
 			}
 		}
 
@@ -309,12 +309,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 		{
 			for (int j = 0; j < dim_pass; j++)
 			{
-				pM22inv[i][j] = matMatrixValGet(pM22invmat, i, j, &err);	// Erzeugen der Inversen pM22inv aus pM22invmat (Rücktransf. in double)
+				pM22inv[i][j] = matMatrixValGet(pM22invmat, i, j, &err);	// Erzeugen der Inversen pM22inv aus pM22invmat (RÃ¼cktransf. in double)
 			}
 		}
 
 
-		// Berechnung von (d^2)L/((dq)(dq_punkt))*(dq_punkt)		(Wird für C benötigt)
+		// Berechnung von (d^2)L/((dq)(dq_punkt))*(dq_punkt)		(Wird fÃ¼r C benÃ¶tigt)
 		for (int i = 0; i < dimq; i++)				
 		{
 			for (int j = 0; j < dimq; j++)
@@ -362,7 +362,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])   /
 			uneu[i] += pC1s[i];
 		}
 		
-		// Auffüllen von uneu mit den passiven Eingängen (Nullen)
+		// AuffÃ¼llen von uneu mit den passiven EingÃ¤ngen (Nullen)
 		for (int j = 0; j < dim_akt; j++)
 		{
 			int k = (int)(akt[j])-1;

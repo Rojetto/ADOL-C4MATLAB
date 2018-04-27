@@ -1,4 +1,4 @@
-// MexADC_forward.cpp : Definiert die exportierten Funktionen für die DLL-Anwendung.
+ï»¿// MexADC_forward.cpp : Definiert die exportierten Funktionen fÃ¼r die DLL-Anwendung.
 //
 #include "mex.h"
 #include "adolc/adolc.h"
@@ -10,14 +10,14 @@
 #define MEXAD_IN_x            2
 #define MEXAD_IN_d            3
 
-// Position und Bedeutung der Rückgabewerte
+// Position und Bedeutung der RÃ¼ckgabewerte
 #define MEXAD_OUT_L           0
 
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-//Für Matlab, damit Datei persistent wird
+//FÃ¼r Matlab, damit Datei persistent wird
 static mxArray *persistent_array_ptr = NULL;
 
 
@@ -65,7 +65,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray*prhs[] )
 	   mexErrMsgIdAndTxt(MEXADC_ErrId(TooManyInputs), "Too many inputs"); 
     } 
     
-    // Funktion gibt einen Vektor zurück
+    // Funktion gibt einen Vektor zurÃ¼ck
     if (nlhs > 1) 
     {
 	   mexErrMsgIdAndTxt(MEXADC_ErrId(TooManyOutputs), "Too many outputs!"); 
@@ -121,11 +121,11 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray*prhs[] )
     }         
     d = (int)mxGetScalar(prhs[MEXAD_IN_d]);
 
-    // Zurückgegeben wird ein reeller d+1 x 1 Spaltenvektor
+    // ZurÃ¼ckgegeben wird ein reeller d+1 x 1 Spaltenvektor
     plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(d+1, 1, mxREAL); 
     
-    // Zeiger auf Lie-Ableitungen = Rückgabezeiger! Achtung! Hier keine
-    // Allokation nötig, das wurde bereits durch mxCreateDoubleMatrix gemacht!
+    // Zeiger auf Lie-Ableitungen = RÃ¼ckgabezeiger! Achtung! Hier keine
+    // Allokation nÃ¶tig, das wurde bereits durch mxCreateDoubleMatrix gemacht!
     pL = mxGetPr(plhs[MEXAD_OUT_L]);
     
     // Rechnen

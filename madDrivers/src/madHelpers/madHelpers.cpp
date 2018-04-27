@@ -1,4 +1,4 @@
-#include "madHelpers.h"
+﻿#include "madHelpers.h"
 
 bool madInitialize(const char* const FileName, 
 				   mxArray** persistent_array_ptr, 

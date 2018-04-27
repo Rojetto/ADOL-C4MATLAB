@@ -1,12 +1,12 @@
-#ifndef MADHELPERS_H
+ï»¿#ifndef MADHELPERS_H
 #define MADHELPERS_H
 
 #include "mex.h"
 
-// Datentyp für das Tag des Tapes
+// Datentyp fÃ¼r das Tag des Tapes
 typedef unsigned short MexADCTagType;
 
-// Für Mex-File Fehlerreport
+// FÃ¼r Mex-File Fehlerreport
 #define MEXADC_ErrId(T)          "mexAD:T"
 
 bool madInitialize(const char* const FileName, mxArray** persistent_array_ptr, 

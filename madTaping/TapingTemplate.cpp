@@ -1,3 +1,7 @@
+/**
+ * \file TapingTemplate.cpp
+ */
+
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"

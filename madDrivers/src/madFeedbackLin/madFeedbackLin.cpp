@@ -1,7 +1,7 @@
-// madFeedbackLin.cpp
+ï»¿// madFeedbackLin.cpp
 
 
-// Benötigte Header und Namensräume
+// BenÃ¶tigte Header und NamensrÃ¤ume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -19,7 +19,7 @@
 #define MEXAD_IN_YREF		5
 
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_OUT_U         0
 #define MEXAD_OUT_DELTA		1
 
@@ -27,13 +27,13 @@
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void)
@@ -46,7 +46,7 @@ void cleanup(void)
 
 
 /* ******************************************************************************************************
- * *****	Übergabeteil / Gateway-Routine															*****
+ * *****	Ãœbergabeteil / Gateway-Routine															*****
  * *****	==============================															*****
  * *****																							*****
  * *****	Programmeinsprungpunkt																	*****
@@ -59,10 +59,10 @@ void cleanup(void)
  */
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-	// Variablendefinitionen für die Verwendung 
-	double* ptrOutput;					// Zeiger auf die Rückgabematrix
+	// Variablendefinitionen fÃ¼r die Verwendung 
+	double* ptrOutput;					// Zeiger auf die RÃ¼ckgabematrix
 	double* pX;							// Zeiger auf Werte der unabh. Variablen
-	double* pK;							// Zeiger auf die Verstärkungsmatrix
+	double* pK;							// Zeiger auf die VerstÃ¤rkungsmatrix
 	double* pYref;						// Zeiger auf die Referenzausgangsmatrix
 
 	MexADCTagType TapeID_F;				// Tape-Kennzeichner f
@@ -89,34 +89,34 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
 
 
-	// Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+	// PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 6, 6);
 	madCheckNumOutputs(nlhs, 0, 2);
 
 
-	// Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+	// Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId_F")) return;
 	TapeID_F = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]);
 
-	//	Anzahl der "n_F" unabhängigen und "m_F" abhängigen Variablen des Tapes_F
+	//	Anzahl der "n_F" unabhÃ¤ngigen und "m_F" abhÃ¤ngigen Variablen des Tapes_F
 	tapestats(TapeID_F, TapeInfo_F);
 	n_F = TapeInfo_F[NUM_INDEPENDENTS];
 	m_F = TapeInfo_F[NUM_DEPENDENTS];
 
-	// Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+	// Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_FG, "TapeId_FG")) return;
 	TapeID_FG = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_FG]);
 
-	//	Anzahl der "n_FG" unabhängigen und "m_FG" abhängigen Variablen des Tapes_FG
+	//	Anzahl der "n_FG" unabhÃ¤ngigen und "m_FG" abhÃ¤ngigen Variablen des Tapes_FG
 	tapestats(TapeID_FG, TapeInfo_FG);
 	n_FG = TapeInfo_FG[NUM_INDEPENDENTS];
 	m_FG = TapeInfo_FG[NUM_DEPENDENTS];
 
-	// Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+	// Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_H, "TapeId_H")) return;
 	TapeID_H = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_H]);
 
-	//	Anzahl der "n_H" unabhängigen und "m_H" abhängigen Variablen des Tapes_H
+	//	Anzahl der "n_H" unabhÃ¤ngigen und "m_H" abhÃ¤ngigen Variablen des Tapes_H
 	tapestats(TapeID_H, TapeInfo_H);
 	n_H = TapeInfo_H[NUM_INDEPENDENTS];
 	m_H = TapeInfo_H[NUM_DEPENDENTS];
@@ -174,7 +174,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
 		double u = 0.;
 
-		// Zeiger für Rückgabe
+		// Zeiger fÃ¼r RÃ¼ckgabe
 		plhs[MEXAD_OUT_U] = mxCreateDoubleMatrix(1, 1, mxREAL);
 		ptrOutput = mxGetPr(plhs[MEXAD_OUT_U]);
 
@@ -188,7 +188,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		for (int i = 0; i <= r; i++)
 			u += pK[i]*(pYref[i]-pdy1[i]);
 
-		// Rückgabe
+		// RÃ¼ckgabe
 		ptrOutput[0] = u / (pdy2[r] - pdy1[r]);
 
 		myfree(pdy1);

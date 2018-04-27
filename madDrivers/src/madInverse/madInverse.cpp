@@ -1,7 +1,7 @@
-// madInverse.cpp
+ï»¿// madInverse.cpp
 
 
-// Benötigte Header und Namensräume
+// BenÃ¶tigte Header und NamensrÃ¤ume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -16,20 +16,20 @@ extern "C" {
 #define MEXAD_IN_n			 1
 
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_OUT_I          0
 
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void) 
@@ -41,7 +41,7 @@ void cleanup(void)
 
 
 /* **************************************************************************
- * *****	Übergabeteil / Gateway-Routine								*****
+ * *****	Ãœbergabeteil / Gateway-Routine								*****
  * *****	==============================								*****
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
@@ -52,8 +52,8 @@ void cleanup(void)
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-	// Variablendefinitionen für die Verwendung 
-	double* ptrOutput;					// Zeiger auf die Rückgabematrix
+	// Variablendefinitionen fÃ¼r die Verwendung 
+	double* ptrOutput;					// Zeiger auf die RÃ¼ckgabematrix
 	double* ptrInput;					// Zeiger auf die Matrix zur Inversion
 	int	n;
 
@@ -65,7 +65,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
     
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+    // PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 2, 2);
 	madCheckNumOutputs(nlhs, 0, 1);
 
@@ -75,7 +75,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	if (!madCheckDim2(prhs, MEXAD_IN_X, n, n, "X")) return;
 	ptrInput = mxGetPr(prhs[MEXAD_IN_X]);
 	
-	// Rückgabe
+	// RÃ¼ckgabe
 	plhs[MEXAD_OUT_I] = mxCreateDoubleMatrix(n, n, mxREAL);
 	ptrOutput = mxGetPr(plhs[MEXAD_OUT_I]);
 

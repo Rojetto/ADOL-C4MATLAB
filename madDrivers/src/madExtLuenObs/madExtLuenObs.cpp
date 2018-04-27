@@ -1,7 +1,7 @@
-// madExtLuenObs.cpp : Definiert die exportierten Funktion forward(tag,m,n,d,keep,X,Y) für die Einbindung als DLL.
+ï»¿// madExtLuenObs.cpp : Definiert die exportierten Funktion forward(tag,m,n,d,keep,X,Y) fÃ¼r die Einbindung als DLL.
 
 
-// Benötigte Header und Namensräume
+// BenÃ¶tigte Header und NamensrÃ¤ume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -17,14 +17,14 @@
 #define MEXAD_IN_KAPPA		 4
 
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_OUT_KEW        0
 
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
@@ -33,7 +33,7 @@ static mxArray *persistent_array_ptr = NULL;
 int binomialCoeff(unsigned int n, unsigned int k);
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void) 
@@ -46,7 +46,7 @@ void cleanup(void)
 
 
 /* **************************************************************************************
- * *****	Übergabeteil / Gateway-Routine											*****
+ * *****	Ãœbergabeteil / Gateway-Routine											*****
  * *****	==============================											*****
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
@@ -58,10 +58,10 @@ void cleanup(void)
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-	// Variablendefinitionen für die Verwendung 
-	double* pKEW;						// Zeiger auf die Rückgabematrix
+	// Variablendefinitionen fÃ¼r die Verwendung 
+	double* pKEW;						// Zeiger auf die RÃ¼ckgabematrix
 	double* pX;							// Zeiger auf den Vektor der unabh. Variablen
-	double* pK;							// Zeiger auf die Verstärkungsmatrix
+	double* pK;							// Zeiger auf die VerstÃ¤rkungsmatrix
 	double* pKappa;						// Zeiger auf den Vektor der Speudobeobachtbarkeitsindizes
 	
 	MexADCTagType TapeID_F;				// Tape-Kennzeichner Vektorfeld f
@@ -83,26 +83,26 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
     
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+    // PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 4, 5);
 	madCheckNumOutputs(nlhs, 0, 1);
             
 
-    // Tape_ID_F ermitteln und zugehörige Informationen des Tapes in Array TapeInfo_F speichern
+    // Tape_ID_F ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo_F speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId_F")) return; 
 		TapeID_F = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]); 
     
-    //	Anzahl der "n_F" unabhängigen und "m_F" abhängigen Variablen des Tapes F
+    //	Anzahl der "n_F" unabhÃ¤ngigen und "m_F" abhÃ¤ngigen Variablen des Tapes F
     tapestats(TapeID_F, TapeInfo_F);
 	n_F = TapeInfo_F[NUM_INDEPENDENTS];
     m_F = TapeInfo_F[NUM_DEPENDENTS];  
 
 
-    // Tape_ID_H ermitteln und zugehörige Informationen des Tapes in Array TapeInfo_H speichern
+    // Tape_ID_H ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo_H speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_H, "TapeId_H")) return; 
 		TapeID_H = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_H]); 
     
-    //	Anzahl der "n_H" unabhängigen und "m_H" abhängigen Variablen des Tapes H
+    //	Anzahl der "n_H" unabhÃ¤ngigen und "m_H" abhÃ¤ngigen Variablen des Tapes H
     tapestats(TapeID_H, TapeInfo_H);
 	n_H = TapeInfo_H[NUM_INDEPENDENTS];
     m_H = TapeInfo_H[NUM_DEPENDENTS];
@@ -134,7 +134,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	}
 
 
-	// Rückgabe
+	// RÃ¼ckgabe
 	plhs[MEXAD_OUT_KEW] = mxCreateDoubleMatrix(n_F, m_H, mxREAL);
 	pKEW = mxGetPr(plhs[MEXAD_OUT_KEW]);
 
@@ -164,7 +164,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 		mxArray *param[2];
 		param[0] = mxCreateDoubleMatrix(n_F, n_F, mxREAL);	// Q[0]
-		param[1] = mxCreateDoubleMatrix(n_F, 1, mxREAL);	// e_(n_F) bzw. später temp
+		param[1] = mxCreateDoubleMatrix(n_F, 1, mxREAL);	// e_(n_F) bzw. spÃ¤ter temp
 		double *pparam;
 		pparam = mxGetPr(param[1]);
 
@@ -230,7 +230,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		pPEW[n_F] = vz;
 
 
-		// Beobachterverstärkung berechnen
+		// BeobachterverstÃ¤rkung berechnen
 		for (int iV=0; iV<n_F; iV++)		// Zeile von V
 		{
 			for (int jV=0; jV<n_F+1; jV++)	// Spalte von V
@@ -317,7 +317,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 
 		mxArray *param1[2];
 		param1[0] = mxCreateDoubleMatrix(n_F, n_F, mxREAL);		// Q[0]
-		param1[1] = mxCreateDoubleMatrix(n_F, m_H, mxREAL);		// e_(nu_i) bzw. später temp
+		param1[1] = mxCreateDoubleMatrix(n_F, m_H, mxREAL);		// e_(nu_i) bzw. spÃ¤ter temp
 		double *pparam12;
 		pparam12 = mxGetPr(param1[1]);
 
@@ -436,7 +436,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		}
 
 
-		// Beobachterverstärkung berechnen
+		// BeobachterverstÃ¤rkung berechnen
 		mxArray *param2[2];
 		param2[0] = mxCreateDoubleMatrix(n_F, m_H, mxREAL);	// k_1, ..., k_(m_H)
 		param2[1] = mxCreateDoubleMatrix(m_H, m_H, mxREAL);	// L

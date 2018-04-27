@@ -1,7 +1,7 @@
-// madCompTorqueControl.cpp
+ï»¿// madCompTorqueControl.cpp
 
 
-// Benötigte Header und Namensräume
+// BenÃ¶tigte Header und NamensrÃ¤ume
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -17,20 +17,20 @@ extern "C" {
 #define MEXAD_IN_Kd			3
 #define MEXAD_IN_ref		4
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_OUT_U			0
 
 
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void) 
@@ -72,7 +72,7 @@ int my_hessian(short tag,
 
 
 /* **************************************************************************************
- * *****	Übergabeteil / Gateway-Routine											*****
+ * *****	Ãœbergabeteil / Gateway-Routine											*****
  * *****	==============================											*****
  * *****																			*****
  * *****	Programmeinsprungpunkt													*****
@@ -83,12 +83,12 @@ int my_hessian(short tag,
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-	// Variablendefinitionen für die Verwendung 
+	// Variablendefinitionen fÃ¼r die Verwendung 
 	double* pU;					// Vektor der Stellmomente
-	double* pX;					// Zeiger auf die Matrix für Taylor-Koeff.
+	double* pX;					// Zeiger auf die Matrix fÃ¼r Taylor-Koeff.
 								// der unabh. Variablen
-	double* Kp;					// Zeiger auf der Verstärkungsmatrix Kp
-	double* Kd;					// Zeiger auf der Verstärkungsmatrix Kd
+	double* Kp;					// Zeiger auf der VerstÃ¤rkungsmatrix Kp
+	double* Kd;					// Zeiger auf der VerstÃ¤rkungsmatrix Kd
 	double* pRef;				// Zeiger auf den Vektor der Referenztrajektorie
 	
 	MexADCTagType TapeID;		// Tape-Kennzeichner
@@ -106,16 +106,16 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
     
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+    // PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 5, 5);
 	madCheckNumOutputs(nlhs, 0, 5);
             
 
-    // Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+    // Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_L, "TapeId")) return; 
 	TapeID     = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_L]); 
     
-    //	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
+    //	Anzahl der "n" unabhÃ¤ngigen und "m" abhÃ¤ngigen Variablen des Tapes
     tapestats(TapeID, TapeInfo);
 	n = TapeInfo[0];
 	m = TapeInfo[1];
@@ -132,7 +132,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	if (!madCheckDim1c(prhs, MEXAD_IN_X, n, "X")) return;
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
 
-	// Verstärkungsmatritzen
+	// VerstÃ¤rkungsmatritzen
 	if (!madCheckDim2(prhs, MEXAD_IN_Kp, dimq, dimq, "Kp")) return;
 	Kp = mxGetPr(prhs[MEXAD_IN_Kp]);
 	if (!madCheckDim2(prhs, MEXAD_IN_Kd, dimq, dimq, "Kd")) return;
@@ -149,7 +149,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	pRef = mxGetPr(prhs[MEXAD_IN_ref]);
 
    
-	// Rückgabe
+	// RÃ¼ckgabe
 	plhs[MEXAD_OUT_U] = mxCreateDoubleMatrix(dimq, 1, mxREAL);
 	pU = mxGetPr(plhs[MEXAD_OUT_U]);
 

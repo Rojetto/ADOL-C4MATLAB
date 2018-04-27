@@ -18,3 +18,10 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Doxygen
+=======
+
+.. doxygenindex::
+   :project: ADOL-C4MATLAB

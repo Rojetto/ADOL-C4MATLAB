@@ -1,4 +1,4 @@
-function TapeId = madTapeCreate2(n, m, keep, FuncFileName, varargin);
+ï»¿function TapeId = madTapeCreate2(n, m, keep, FuncFileName, varargin);
 
 % TapeId = madTapeCreate(n, m, keep, FuncFileName.m)
 %
@@ -29,7 +29,7 @@ function TapeId = madTapeCreate2(n, m, keep, FuncFileName, varargin);
 
 % (c) 2010-2012 
 % Carsten Friede, Jan Winkler
-% Institut für Regelungs- und Steuerungstheorie
+% Institut fÃ¼r Regelungs- und Steuerungstheorie
 % TU Dresden
 % Jan.Winkler@tu-dresden.de
 
@@ -86,7 +86,7 @@ if (fid < 3)
     return;
 end
 
-% FuncToBeTaped= fscanf(fid,'%s');  % einfachste Möglichkeit schreibt aber
+% FuncToBeTaped= fscanf(fid,'%s');  % einfachste MÃ¶glichkeit schreibt aber
                                     % alles in eine Zeile
 FuncToBeTaped = '';
 k=1;
@@ -101,7 +101,7 @@ while 1
 end
 fclose(fid);
 
-% Parameter für das Taping konvertieren und speichern
+% Parameter fÃ¼r das Taping konvertieren und speichern
 % ==================================================
 TapeParameter = {num2str(DefaultTapeNumber),
                  num2str(n),
@@ -120,7 +120,7 @@ end
 
 % cpp-Datei aufbauen
 % ===================
-fid_in = fopen('TapingTemplate2.cpp','rt');    % Vorlage lesend öffnen
+fid_in = fopen('TapingTemplate2.cpp','rt');    % Vorlage lesend Ã¶ffnen
 
 optargin = size(varargin,2);
 optarginstr = num2str(optargin);
@@ -150,7 +150,7 @@ end
 k=1;    % Zeilenindex
 while 1
     lines{k} = fgets(fid_in);   % einlesen mit Zeilenumbruch
-    if ~ischar(lines{k})        % Prüfung auf Dateiende
+    if ~ischar(lines{k})        % PrÃ¼fung auf Dateiende
         break;
     end
     
@@ -163,7 +163,7 @@ while 1
     lines{k} = regexprep(lines{k}, '// Insertion of function to be taped', FuncToBeTaped);
     k = k+1;
 end
-fclose(fid_in);     % Vorlage schließen
+fclose(fid_in);     % Vorlage schlieÃŸen
 
 
 % parametrisierte cpp-Datei schreiben
@@ -173,7 +173,7 @@ for n=1:length(lines)-1
 end
 
 
-% geschriebene cpp-Datei schließen
+% geschriebene cpp-Datei schlieÃŸen
 % ================================
 res = fclose(fid_out);
 if (res < 0)
@@ -192,7 +192,7 @@ selectedToolchain = 1;
 selectedToolchain = input('Your Choice? [1]: ');
 
 
-% Befehlsstring für Compiler bauen
+% Befehlsstring fÃ¼r Compiler bauen
 % ================================
 clear IncDir;
 clear LibDir;
@@ -217,7 +217,7 @@ switch(selectedToolchain)
         % Include-Pfad
         CC = [CC, ' /I ', IncDir{selectedToolchain}];
         
-        % Angabe der Objektreferenzen für die DLL
+        % Angabe der Objektreferenzen fÃ¼r die DLL
         CC = [CC, ' /link /LIBPATH ', LibDir{selectedToolchain}, '\\', LibName{1},'"'];
                 
     case 2
@@ -248,7 +248,7 @@ switch(selectedToolchain)
         end
         
     otherwise
-        disp('kein Compiler verfügbar');
+        disp('kein Compiler verfÃ¼gbar');
 end
 
 
@@ -271,19 +271,19 @@ disp('============================================');
 % Linkage-Prozess (nur bei Verwendung von GCC)
 if (selectedToolchain == 2)
 
-    % Befehlsstring für Linker bauen
+    % Befehlsstring fÃ¼r Linker bauen
     % ==============================
     
     % Compiler-Datei
     LC = Compiler;
 
-    % Objektdatei für Linker
+    % Objektdatei fÃ¼r Linker
     LC = [LC, ' ', ObjectFileName];
 
     % Zu bauenende Datei
     LC = [LC, ' -o ', ExeFileName];
 
-    % Suchpfad für Bibliotheken
+    % Suchpfad fÃ¼r Bibliotheken
     for i=1:1:length(LibDir)
         LC = [LC, ' -L', LibDir{i}];
     end
@@ -307,7 +307,7 @@ if (selectedToolchain == 2)
 
 
 
-    % Durchführung der Linkage
+    % DurchfÃ¼hrung der Linkage
     % ========================
     disp('Trying to link with command: ');
     disp(LC);
@@ -325,7 +325,7 @@ if (selectedToolchain == 2)
 end
 
 
-% Ausführung der erzeugten Datei zur Erzeugung der Tapes
+% AusfÃ¼hrung der erzeugten Datei zur Erzeugung der Tapes
 % ======================================================
 
 %pause(5)

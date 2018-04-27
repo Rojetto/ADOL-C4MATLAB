@@ -1,7 +1,7 @@
-// madLagrange.cpp
+ï»¿// madLagrange.cpp
 
 
-// Benötigte Header
+// BenÃ¶tigte Header
 #include "mex.h"
 #include "adolc\adolc.h"
 #include "madHelpers.h"
@@ -16,7 +16,7 @@ extern "C" {
 #define MEXAD_IN_u	         2
 
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
+// Position und Bedeutung der RÃ¼ckgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_OUT_L          0
 #define MEXAD_OUT_M			 1
 #define MEXAD_OUT_C			 2
@@ -26,13 +26,13 @@ extern "C" {
 // wird nach dem 1.Aufruf auf true gesetzt
 static bool    MexInitialized = false;   
 
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
+/* FÃ¼r Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
  * Polling auf das Tape zu umgehen 
  */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
+// Freigabe des Zugriffs auf das Tape und RÃ¼cksetzen der Initialisierung
 // Muss hier so definiert werden, da mexAtExit einen Aufruf mit
 // void parameterliste erwartet!
 void cleanup(void) 
@@ -74,7 +74,7 @@ int my_hessian(short tag,
 
 
 /* **************************************************************************
- * *****	Übergabeteil / Gateway-Routine								*****
+ * *****	Ãœbergabeteil / Gateway-Routine								*****
  * *****	==============================								*****
  * *****																*****
  * *****	Programmeinsprungpunkt										*****
@@ -88,14 +88,14 @@ int my_hessian(short tag,
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-	// Variablendefinitionen für die Verwendung 
-	double* pL;					// Zeiger auf die Rückgabematrix
-	double* pC;					// Zeiger auf die Rückgabematrix
-	double* pM;					// Zeiger auf die Rückgabematrix
-	double* pVM;				// Zeiger auf die Rückgabematrix
-	double* pX;					// Zeiger auf die Matrix für Taylor-Koeff.
+	// Variablendefinitionen fÃ¼r die Verwendung 
+	double* pL;					// Zeiger auf die RÃ¼ckgabematrix
+	double* pC;					// Zeiger auf die RÃ¼ckgabematrix
+	double* pM;					// Zeiger auf die RÃ¼ckgabematrix
+	double* pVM;				// Zeiger auf die RÃ¼ckgabematrix
+	double* pX;					// Zeiger auf die Matrix fÃ¼r Taylor-Koeff.
 								// der unabh. Variablen
-	double* u;                  // Zeiger auf die Matrix der äußeren Kräfte
+	double* u;                  // Zeiger auf die Matrix der Ã¤uÃŸeren KrÃ¤fte
 	
 	MexADCTagType TapeID;		// Tape-Kennzeichner
 	int n;						// Anzahl der unabh. Variablen
@@ -112,16 +112,16 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
     
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+    // PrÃ¼fen der Anzahl der Eingabe- und RÃ¼ckgabeargumente
 	madCheckNumInputs(nrhs, 3, 3);
 	madCheckNumOutputs(nlhs, 0, 4);
             
 
-    // Tape_ID ermitteln und zugehörige Informationen des Tapes in Array TapeInfo speichern
+    // Tape_ID ermitteln und zugehÃ¶rige Informationen des Tapes in Array TapeInfo speichern
 	if (!CheckIfScalar(prhs, MEXAD_IN_TAPE_F, "TapeId")) return; 
 	TapeID     = (MexADCTagType)mxGetScalar(prhs[MEXAD_IN_TAPE_F]); 
     
-    //	Anzahl der "n" unabhängigen und "m" abhängigen Variablen des Tapes
+    //	Anzahl der "n" unabhÃ¤ngigen und "m" abhÃ¤ngigen Variablen des Tapes
     tapestats(TapeID, TapeInfo);
 	n = TapeInfo[0];
 	m = TapeInfo[1];
@@ -138,11 +138,11 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	if (!madCheckDim1c(prhs, MEXAD_IN_X, n, "X")) return;
 	pX = mxGetPr(prhs[MEXAD_IN_X]);
 
-	// Äußere Kräfte u
+	// Ã„uÃŸere KrÃ¤fte u
 	if (!madCheckDim1c(prhs, MEXAD_IN_u, dimq, "u")) return;
     u = mxGetPr(prhs[MEXAD_IN_u]);
    
-		// Rückgabe
+		// RÃ¼ckgabe
 	plhs[MEXAD_OUT_L] = mxCreateDoubleMatrix(n, 1, mxREAL);
 	pL = mxGetPr(plhs[MEXAD_OUT_L]);
 	plhs[MEXAD_OUT_M] = mxCreateDoubleMatrix(dimq, dimq, mxREAL);
@@ -265,7 +265,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		{
 			for (int j = 0; j < dimq; j++)
 			{
-				pL[i+dimq] += pHi[i][j] * (pG[j] - pZw[j] + u[j]);			//u[j] besteht aus der Summe der äußeren Kräfte und den Dissipationskräften
+				pL[i+dimq] += pHi[i][j] * (pG[j] - pZw[j] + u[j]);			//u[j] besteht aus der Summe der Ã¤uÃŸeren KrÃ¤fte und den DissipationskrÃ¤ften
 			}
 		}
 	}
