@@ -3,7 +3,7 @@
  */
 
 #include "mex.h"
-#include "adolc\adolc.h"
+#include "adolc/adolc.h"
 #include "madHelpers.h"
 #include <iostream>
 #include <time.h>
@@ -47,7 +47,7 @@ void cleanup(void)
  */
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-	// Initialisierung der MEX-Funktion
+    // Initialisierung der MEX-Funktion
  	if (!MexInitialized) 
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
 

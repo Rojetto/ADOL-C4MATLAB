@@ -20,18 +20,25 @@ function TapeId = madTapeOpen(varargin)
 % can access the tapes.
 
 % (c) 2010-2018 
-% Carsten Friede, Jan Winkler, Mirko Franke
-% Institut für Regelungs- und Steuerungstheorie
-% TU Dresden
-% {Jan.Winkler, Mirko.Franke}@tu-dresden.de
+% Mirko Franke, Jan Winkler, Carsten Friede
+% Institute of Control Theory
+% Technische Universität Dresden
+% {Mirko.Franke, Jan.Winkler}@tu-dresden.de
 
 persistent MaxAssignedTapeId;
+
+isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
+if isOctave
+     warning('off', 'Octave:mixed-string-concat');
+     warning('off', 'Octave:language-extension');
+end
 
 if (nargin == 0)
     TapeId = MaxAssignedTapeId;
     return;
-elseif (nargin == 1)
+elseif (nargin == 2)
     MexFileName = varargin{1};
+    Settings    = varargin{2};
 else
     error('Incorrect number of input arguments!');
 end

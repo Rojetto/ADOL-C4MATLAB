@@ -3,7 +3,7 @@
 
 // Benötigte Header
 #include "mex.h"
-#include "adolc\adolc.h"
+#include "adolc/adolc.h"
 #include "madHelpers.h"
 extern "C" {
 	#include "matrixlib.h"

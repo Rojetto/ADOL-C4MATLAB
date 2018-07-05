@@ -1,0 +1,290 @@
+/*!
+\page drivers Drivers
+
+\addindex drivers
+\tableofcontents
+
+
+
+\section basicDrivers Basic Drivers
+
+\subsection madForward madForward
+
+Calculates the scaled Taylor coefficients of the image path.
+
+### Synopsis
+
+	Z = madForward(TapeId, d, keep, X)
+	
+### Description
+
+This function calculates the scaled Taylor coefficients \f$z_i\f$ (\f$i=0,\ldots,d)\f$ of the image path 
+\f[
+	z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \ldots + z_d t^d + \mathcal{O}(t^d)
+\f]
+of the function \f$F\f$ represented by the tape with the tape number \p TapeId. The \c n \f$\times\f$ \c d matrix \c X contains the Taylor coefficients \f$x_i\f$ (\f$i=0,\ldots,d\f$) of the path 
+\f[
+	x(t) = x_0 + x_1 t x_2 t^2 + \ldots + x_d t^d + \mathcal{O}(t^d)
+\f]
+with \c n the number of independent variables of the function and \c d the number of derivatives of \f$x(t)\f$. The flag \c keep determines how many derivatives are internally stored for the use of the reverse mode. The following must hold: \f$1 \leq \mathtt{keep} \leq \mathtt{d}+1\f$. The function returns a \f$\mathtt{m} \times \mathtt{d}+1\f$ matrix containing the Taylor coefficients \f$z_i\f$ (\f$i=0,\ldots,d\f$) of the image path with \c m the number of dependent variables.
+
+Keep in mind that the Taylor coefficients of the paths are defined as follows:
+\f[
+	x_k = \frac{1}{k!}\frac{\partial^k}{\partial t^k}x(t), \qquad z_k = \frac{1}{k!}\frac{\partial^k}{\partial t^k}z(t), \qquad k = 0, \ldots, d.
+\f]
+
+### Example
+	
+It is assumed that the function
+\f[
+	{y} = \begin{pmatrix}
+		x_1^2x_2 + x_1\cos(x_2)\\
+		x_2^2\sin(x_1) + x_2x_1^2
+	\end{pmatrix}
+\f]
+is represented by the tape with the number \c TapeId . If one has \f$x_1(0) = 3, \dot x_1(0) = -3, \ddot x_1(0) = -6\f$ and \f$x_2(0) = 4, \dot x_1(0) = 4, \ddot x_1(0) = 8\f$ and one wants to calculate \f$z_0, z_1, z_2\f$ one has to do the following:
+
+	>> X = [3 4; -3 4; -3 4]';
+	>> Z = madForward(TapeId, 2, 2, X)
+	
+	Z = 
+		34.0391 -24.9574 -54.3516
+		38.2579  16.0355  67.1720
+
+<hr>
+
+
+\subsection madFunction madFunction
+
+Calculates the value of a function.
+
+### Synopsis
+
+	Y = madFunction(TapeId, X)
+
+### Description
+
+\c madFunction calculates the value of a function tape which is referenced by the number \p TapeId. The point at which the function is evaluated is given by the column vector \p X. The value of the function is returned in the column vector \p Y.
+
+### Example
+
+It is assumed that the function
+\f[ 
+	{y} = \begin{pmatrix} x_1^2x_2 + x_1\cos(x_2) \\ x_2^2\sin(x_1) + x_2x_1^2 \end{pmatrix}
+\f]
+is represented by the tape with the number \p TapeId. Then the value of the function at the point \f$(1,2)^T\f$ is calculated by the following commands:
+
+	>> X = [1; 2];
+	>> Y = madFunction(TapedId, X)
+
+	Y =
+	    1.5839
+	    5.3659
+
+<hr>
+
+
+\subsection madGradient
+
+Calculates the Gradient of a scalar field.
+
+### Synopsis
+
+	G = madGradient(TapeId, X)
+	
+### Description
+
+\c madGradient calculates the gradient of a scalar field represented by a tape with the number \p TapeId. The point of evaluation of the gradient is given by the column vector \p X. The gradient is returned in the column vector \p G.
+
+### Example
+
+Assume that the function 
+\f[ y = x_1^2 x_2 + x_1 \cos(x_2) \f] 
+is represented by the tape with the number \p TapeId. Then the value of the gradient at the point \f$(3, 4)^T\f$ is calculated by the following commands:
+
+	>> X = [3; 4];
+	>> G = madGradient (TapeId , X)
+	
+	G =
+	    23.3464
+	    11.2704
+
+<hr>
+
+
+\subsection madHessian
+
+Calculates the Hessian of a function.
+
+### Synopsis
+
+	H = madHessian(TapeId, X)
+	
+### Description
+
+\c madHessian calculates the Hessian of a function represented by a tape with the number \p TapeId. The point of evaluation of the Hessian is given by the column vector \p X. The Hessian is returned in the matrix \p H.
+
+### Example
+
+Assume that the function 
+\f[ y = x_1^2 x_2 + x_1 \cos(x_2) \f] 
+is represented by the tape with the number \p TapeId. Then the value of the Hessian at the point \f$(3, 4)^T\f$ is calculated by the following commands:
+
+	>> X = [3; 4];
+	>> H = madHessian (TapeId , X)
+
+	H =
+	    8.0000 6.7568
+	    6.7568 1.9609
+
+<hr>
+
+
+\subsection madJacobian
+
+Calculates the Jacobian of a function.
+
+### Synopsis
+
+	J = madJacobian(TapeId, X)
+	
+### Description
+
+\c madJacobian calculates the Jacobian of a function represented by a tape with the number \p TapeId. The point of evaluation of the Jacobian is given by the column vector \p X. The Jacobian is returned in the matrix \p J.
+
+### Example
+
+Assume that the function 
+\f[ 
+	{y} = \begin{pmatrix} x_1^2x_2 + x_1\cos(x_2) \\ x_2^2\sin(x_1) + x_2x_1^2 \end{pmatrix}
+\f]
+is represented by the tape with the number \p TapeId. Then the value of the Hessian at the point \f$(3, 4)^T\f$ is calculated by the following commands:
+
+	>> X = [3; 4];
+	>> J = madJacobian(TapeId , X´)
+	
+	J =
+	    23.3464 11.2704
+	     8.1601 10.1290
+
+<hr>
+
+
+\subsection madLieBracket
+
+<hr>
+
+
+\subsection madLieCovector
+
+<hr>
+
+
+\subsection madLieDerivative
+
+<hr>
+
+
+\subsection madLieGradient
+
+<hr>
+
+
+\subsection madLieMixedDerivative
+
+<hr>
+
+
+\subsection madLieScalar
+
+<hr>
+
+
+\subsection madReverse madReverse
+
+<hr>
+
+
+
+\section advancedDrivers Advanced Drivers
+
+\subsection madCompTorqueControl
+
+<hr>
+
+\subsection madCompTorqueLagrange
+
+<hr>
+
+\subsection madExtLuenObs
+
+<hr>
+
+\subsection madFeedbackLin
+
+<hr>
+
+\subsection madHighGainObs
+
+Calculates the observer gain for a High-Gain observer.
+
+### Synopsis
+
+for SISO systems:
+
+	kHG = madHighGainObs(TapeIdF, TapeIdH, X, k)
+
+for MIMO systems:
+
+	KHG = madHighGainObs(TapeIdF, TapeIdH, X, K, kappa)
+
+### Description
+
+### Examples
+
+#### Lorenz System
+
+Consider that the fector field \f$f(x)\f$ and the scalar field \f$h(x)\f$ of the Lorenz system \cite Lor63
+
+\f[
+	\dot{x} = f(x) = \begin{pmatrix}
+		\sigma(x_2 - x_1) \\ rx_1 - x_2 -x_1x_3 \\ -bx_3 - x_1x_2
+	\end{pmatrix}
+\f]
+
+with the output
+
+\f[
+	y = h(x) = \arctan x_3
+\f]
+
+where \f$\sigma = 10\f$, \f$b = 8/3\f$, \f$r = 28\f$ are represented by the tapes with the numbers \p TapeIdF and \p TapeIdH.
+
+For simplicity the observer dynamics is chosen such that all poles are \f$-10\f$. This results in \f$k=(30, 300, 1000)^T\f$. The initial observer state is chosen to be \f$ \hat x_0 = (1, 1, 1)^T\f$ while the true initial state is \f$ x_0 = (10, 10, 10)^T\f$.
+
+
+	k = [30; 300; 1000];
+	X = [1; 1; 1];
+	kHG = madHighGainObs(TapeIdF, TapeIdH, X, k)
+	
+	kHG = ...
+
+<hr>
+
+\subsection madLagrange
+
+<hr>
+
+\subsection madLagrangePartLin
+
+<hr>
+
+\subsection madPartLin
+
+### Synopsis
+### Description
+### Example
+
+
+
+*/

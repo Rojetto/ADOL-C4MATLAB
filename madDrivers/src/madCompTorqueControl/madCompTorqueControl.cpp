@@ -1,9 +1,8 @@
-﻿// madCompTorqueControl.cpp
+// madCompTorqueControl.cpp
 
 
-// Benötigte Header und Namensräume
 #include "mex.h"
-#include "adolc\adolc.h"
+#include "adolc/adolc.h"
 #include "madHelpers.h"
 extern "C" {
 	#include "matrixlib.h"
@@ -273,3 +272,4 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	
     return;   
 }
+

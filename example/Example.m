@@ -1,30 +1,35 @@
-% Beispielscript für ADOL-C unter Matlab
+% Beispielscript fï¿½r ADOL-C unter Matlab
 %
 % Vorher bitte Readme lesen
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 1: Pfade hinzufügen und DLL kopieren
+% Schritt 1: Pfade hinzufï¿½gen und DLL kopieren
 % 
-% Benötigt wird Datei Settings.m, in der der die Pfade richtig spezifiziert
-% werden müssen
+% Benï¿½tigt wird Datei Settings.m, in der der die Pfade richtig spezifiziert
+% werden mï¿½ssen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-madTapingPath = '..\madTaping';
-madDriversPath = '..\madDrivers\build32';
-addpath(madTapingPath);
-addpath(madDriversPath);
+SettingsFile    = '../madSettings';
+%SettingsFile    = '../madSettings_Octave_Win';
+%SettingsFile    = '../madSettings_Octave_Linux';
+    
+% load settings
+[filepath, name] = fileparts([SettingsFile, '.m']);
+addpath(filepath);
+Settings = eval(name);
+rmpath(filepath);
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Schritt 2: Tape erzeugen
-% muss nur 1x durchgeführt werden
+% muss nur 1x durchgefï¿½hrt werden
 % 
-% Benötigt wird Datei XSinXY.m, in der der reine Code der Funktion steht
+% Benï¿½tigt wird Datei XSinXY.m, in der der reine Code der Funktion steht
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % n = 2, d = 1, keep = 0
-TapeId = madTapeCreate(2, 1, 0, 'XSinXY.m',1);
-
+TapeId = madTapeCreate(2, 1, 1, 'XSinXY.m', Settings);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Schritt 3: Arbeiten mit den Treibern
@@ -33,7 +38,7 @@ TapeId = madTapeCreate(2, 1, 0, 'XSinXY.m',1);
 % Funktionswert an der Stelle (3,4)
 X = [3 4]';
 disp('Funktionswert: ');
-madFunction(TapeId, X)
+%madFunction(TapeId, X)
 
 % Gradient an der Stelle (3,4)
 X = [3 4]';
@@ -60,13 +65,12 @@ madTapeClose(TapeId);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 4: Pfade löschen und aufräumen
+% Schritt 4: Pfade lï¿½schen und aufrï¿½umen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-rmpath(madTapingPath);
-rmpath(madDriversPath);
+
 %clear madTapingPath madDriversPath
 clear all;
 %clear mex;  % mex-Funktionen entladen
 warning off;
-delete *.tap *.cpp *.obj *.exe;
+%delete *.cpp *.obj *.exe;
 warning on;

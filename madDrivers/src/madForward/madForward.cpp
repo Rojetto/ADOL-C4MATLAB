@@ -3,9 +3,8 @@
 
 // Benötigte Header und Namensräume
 #include "mex.h"
-#include "adolc\adolc.h"
+#include "adolc/adolc.h"
 #include "madHelpers.h"
-#include "adolc\lie\drivers.h"
 
 
 

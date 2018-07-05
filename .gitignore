@@ -2,3 +2,6 @@
 /docs/_doxygen
 /docs/.idea
 /docs/_build
+*.mex
+*.mexw32
+*.pdb
