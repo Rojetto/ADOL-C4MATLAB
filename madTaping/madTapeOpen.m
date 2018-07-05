@@ -36,9 +36,8 @@ end
 if (nargin == 0)
     TapeId = MaxAssignedTapeId;
     return;
-elseif (nargin == 2)
+elseif (nargin == 1)
     MexFileName = varargin{1};
-    Settings    = varargin{2};
 else
     error('Incorrect number of input arguments!');
 end
@@ -65,14 +64,13 @@ TapeFileNumbered = ['TapeFactory_', int2str(TapeId)];
 
 if (res ~= 0)
     disp(msg);
-    error('Copy of Tape %s to %s failed! Refer to the error message displayed above for more details!', [TapeFile, '.', mexext], [TapeFileNumbered, '.', mexext]);
     TapeId = -1;
-	return;
+    error('Copy of Tape %s to %s failed! Refer to the error message displayed above for more details!', [TapeFile, '.', mexext], [TapeFileNumbered, '.', mexext]);
 end
 
 
 eval([TapeFileNumbered, '(', int2str(TapeId), ')']);
 
-disp(sprintf('Tape successfully opened under id %d', TapeId));
+fprintf('Tape successfully opened under id %d', TapeId);
 disp(' ');
 

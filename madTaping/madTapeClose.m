@@ -50,14 +50,14 @@ end
 if (strcmp(TapeId, 'all'))
     files = dir(pwd);
     for i=1:1:length(files)
-        if ( ~isempty(findstr(files(i).name, TapePraefix{1})) | ...
-                ~isempty(findstr(files(i).name, TapePraefix{2})) | ...
-                ~isempty(findstr(files(i).name, TapePraefix{3})) )
+        if ( ~isempty(strfind(files(i).name, TapePraefix{1})) || ...
+             ~isempty(strfind(files(i).name, TapePraefix{2})) || ...
+             ~isempty(strfind(files(i).name, TapePraefix{3})) )
             delete(files(i).name);
         end
-		if ( regexp(files(i).name, ['TapeFactory_[0-9]+\.', mexext]) )
-			[pn,fn,en]=fileparts(files(3).name);
-			eval(['clear ', fn]);
+        if regexp(files(i).name, ['TapeFactory_[0-9]+\.', mexext])
+            [~, fn, ~]=fileparts(files(3).name);
+            eval(['clear ', fn]);
             delete(files(i).name);
         end
     end
@@ -72,14 +72,14 @@ else
     end
 	
 	TapeFactoryFile = [TapeFactoryPraefix, num2str(TapeId), '.', mexext];
-	if (exist(TapeFactoryFile))
-		eval(['clear ', TapeFactoryPraefix, num2str(TapeId)]);
-		delete(TapeFactoryFile);
-	else    
+	if exist(TapeFactoryFile, 'file')
+        eval(['clear ', TapeFactoryPraefix, num2str(TapeId)]);
+        delete(TapeFactoryFile);
+    else    
         result = -1;
-    end
+	end
 	
     if (result == 0)
-		disp(sprintf('Tape # %d successfully unloaded!\n', TapeId));
+		fprintf('Tape # %d successfully unloaded!\n', TapeId);
     end
 end

@@ -62,7 +62,7 @@ BaseFileName = FuncFileName;
 
 indM = strfind(BaseFileName, '.m');
 if (isempty(indM))
-    error(sprintf('File %s is not a m-file!', FuncFileName));
+    error('File %s is not a m-file!', FuncFileName);
 end
 
 BaseFileName = BaseFileName(1:indM-1);
@@ -78,7 +78,7 @@ MexFileName    = ['TapeFactory_', BaseFileName];
 % ========================================================
 fid            = fopen(FuncFileName, 'rt');
 if (fid < 3)
-    error(sprintf('Function file with name %s could not be opened!', FuncFileName));
+    error('Function file with name %s could not be opened!', FuncFileName);
 end
 
 % FuncToBeTaped= fscanf(fid,'%s');  % einfachste Mï¿½glichkeit schreibt aber
@@ -102,8 +102,7 @@ fclose(fid);
 % =================
 fid_out = fopen(SourceFileName, 'wt');
 if (fid_out < 3)
-    error(sprintf('A source file with the name %s could not be created!', SourceFileName));
-    return;
+    error('A source file with the name %s could not be created!', SourceFileName);
 end
 
 
@@ -162,6 +161,7 @@ mex(iPath1, iPath2, iPath3, lPath, lName, '-O', outName{:}, SourceFileName, help
 
 
 % Löschen von nicht benötigten Dateien
+delete(SourceFileName);
 if exist(ObjectFileName, 'file')
     delete(ObjectFileName);
 end
@@ -174,8 +174,5 @@ end
 
 
 
-
-
-
 % Öffnen des Tapes
-TapeId = madTapeOpen(BaseFileName, Settings);
+TapeId = madTapeOpen(BaseFileName);
