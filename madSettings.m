@@ -8,10 +8,12 @@ function [Settings] = madSettings()
 % Technische Universität Dresden
 % {Mirko.Franke, Jan.Winkler}@tu-dresden.de
    
+    % get path of this file to make it passible to specify header and 
+    % library path relative to this file
     thisFilePath = fileparts(mfilename('fullpath'));
 
     % ====================================================
-    % List of paths to the Adol-C header files
+    % Path to the Adol-C header files
     %
     % Use absolute paths only! 
     % Do NOT use quotes (")!
@@ -21,7 +23,7 @@ function [Settings] = madSettings()
 
 
     % ====================================================
-    % List of paths to the Adol-C library directories
+    % Path to the Adol-C library directorie
     %
     % Use absolute paths only!
     % Do NOT use quotes (")!

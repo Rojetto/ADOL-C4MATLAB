@@ -1,6 +1,6 @@
-function install(varargin)
+function install()
 
-% install(Toolchain)
+% install()
 %
 % 
 
@@ -10,15 +10,12 @@ function install(varargin)
 % Technische Universität Dresden
 % {Mirko.Franke, Jan.Winkler}@tu-dresden.de
 
+
     % specify settings file
-   SettingsFile    = 'madSettings';
-   SettingsFile    = 'madSettings_Octave_Win';
-%      SettingsFile    = 'madSettings_Octave_Linux';
+    SettingsFile    = 'madSettings';
+% 	SettingsFile    = 'madSettings_Octave_Win';
+% 	SettingsFile    = 'madSettings_Octave_Linux';
     
-    % detect whether Matlab or Octave is running
-    isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
-
-
     
     % load settings
     if (~exist(sprintf('%s.m', SettingsFile), 'file'))
@@ -26,7 +23,12 @@ function install(varargin)
     else
         Settings = eval(SettingsFile);
     end
+    
+    
+    % detect whether Matlab or Octave is running
+    isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
+    
     % compiler and linker settings
     iPath1 = ['-I', Settings.IncDir];
     iPath2 = ['-I', 'madDrivers/src/madHelpers'];
@@ -38,6 +40,7 @@ function install(varargin)
     defDebug = '-D__DEBUG__';
     enDebug  = '-g';
 
+    
     % list of MEX functions to build
     madFiles = {'madCompTorqueControl'; 
                 'madCompTorqueLagrange';
@@ -58,10 +61,9 @@ function install(varargin)
                 'madLieMixedDerivative';
                 'madLieScalar';
                 'madReverse';
-                'madInverse';
-                'madInverse2';
                 };
 
+            
     % build MEX files
     for i=1:size(madFiles,1)
         madFile = madFiles{i};
@@ -82,9 +84,12 @@ function install(varargin)
         end
     end
     
+    
+    % delete remaning object files
     if exist('madHelpers.o', 'file')
         delete('madHelpers.o');
     end
     if exist('matrixlib.o', 'file')
         delete('matrixlib.o');
     end
+end
