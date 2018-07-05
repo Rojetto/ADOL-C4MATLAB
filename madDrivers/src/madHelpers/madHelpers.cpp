@@ -29,7 +29,6 @@ void madCheckNumInputs(int nrhs, int MinNum, int MaxNum)
 };
 
 
-
 void madCheckNumOutputs(int nlhs, int MinNum, int MaxNum)
 {
     if (nlhs > MaxNum)
@@ -53,6 +52,7 @@ bool CheckIfScalar(const mxArray *ptr[], int ind, const char* const info)
    return true;
 };
 
+
 bool madCheckDim1r(const mxArray *ptr[], int ind, int nc, const char* const info)
 {
 	mwSize NumDim  = mxGetNumberOfDimensions(ptr[ind]);
@@ -65,6 +65,7 @@ bool madCheckDim1r(const mxArray *ptr[], int ind, int nc, const char* const info
 	}
 	return true;
 };
+
 
 bool madCheckDim1c(const mxArray *ptr[], int ind, int nr, const char* const info)
 {
@@ -92,6 +93,7 @@ bool madCheckDim2(const mxArray *ptr[], int ind, int nr, int nc, const char* con
 	return true;
 };
 
+
 bool madCheckDim3(const mxArray *ptr[], int ind, int nr, int nc, int np, const char* const info)
 {
 	mwSize NumDim      = mxGetNumberOfDimensions(ptr[ind]);
@@ -104,6 +106,7 @@ bool madCheckDim3(const mxArray *ptr[], int ind, int nr, int nc, int np, const c
 	return true;
 };
 
+
 void madMatrix2Vector(double** pM, double* pV, int nr, int nc)
 {
 	for (int i = 0; i < nc; i++)
@@ -115,6 +118,7 @@ void madMatrix2Vector(double** pM, double* pV, int nr, int nc)
 	};
 };
 	
+	
 void madVector2Matrix(double* pV, double** pM, int nr, int nc)
 {
 	for (int i = 0; i < nc; i++)
@@ -125,6 +129,8 @@ void madVector2Matrix(double* pV, double** pM, int nr, int nc)
 		};
 	};
 };
+
+
 
 
 

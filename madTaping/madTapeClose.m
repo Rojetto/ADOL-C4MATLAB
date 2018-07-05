@@ -25,11 +25,11 @@ function result = madTapeClose(TapeId)
 
 
     result = 0;
-    NumTapeFiles       = 3;
+    NumTapeFiles = 3;
 
-    TapePraefix{1}    = 'ADOLC-Locations_';
-    TapePraefix{2}    = 'ADOLC-Operations_';
-    TapePraefix{3}    = 'ADOLC-Values_';
+    TapePraefix{1} = 'ADOLC-Locations_';
+    TapePraefix{2} = 'ADOLC-Operations_';
+    TapePraefix{3} = 'ADOLC-Values_';
 
     TapeFactoryPraefix = 'TapeFactory_';
 
@@ -56,7 +56,6 @@ function result = madTapeClose(TapeId)
                 delete(files(i).name);
             end
         end
-
         
     % clear files wih ID TapeId
     else

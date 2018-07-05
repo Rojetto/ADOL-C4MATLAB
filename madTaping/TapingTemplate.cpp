@@ -1,5 +1,9 @@
 /**
- * \file TapingTemplate.cpp
+ * (c) 2010-2018 
+ * Mirko Franke, Jan Winkler, Carsten Friede
+ * Institute of Control Theory
+ * Technische Universit�t Dresden
+ * {Mirko.Franke, Jan.Winkler}@tu-dresden.de
  */
 
 #include "mex.h"
@@ -8,24 +12,15 @@
 #include <iostream>
 #include <time.h>
 
-// Position und Bedeutung der Rückgabewerte der MEX-Funktion (also *plhs[])
 #define MEXAD_IN_TAPE_ID          0
 
-// wird nach dem 1.Aufruf auf true gesetzt
-static bool    MexInitialized = false;   
 
-// Speichern der ID
+static bool MexInitialized = false;   
 static MexADCTagType TapeID = 0;
-
-/* Für Matlab, damit Datei persistent wird - einmalige Zuordnung des File-Descriptors, um
- * Polling auf das Tape zu umgehen 
- */
 static mxArray *persistent_array_ptr = NULL;
 
 
-// Freigabe des Zugriffs auf das Tape und Rücksetzen der Initialisierung
-// Muss hier so definiert werden, da mexAtExit einen Aufruf mit
-// void parameterliste erwartet!
+// cleanup routine
 void cleanup(void) 
 {
 	mexPrintf("Tape # %d (%s) closed\n", TapeID, __FILE__);
@@ -34,24 +29,14 @@ void cleanup(void)
 }
 
 
-
-/* **************************************************************************
- * *****	Übergabeteil / Gateway-Routine								*****
- * *****	==============================								*****
- * *****																*****
- * *****	Programmeinsprungpunkt										*****
- * *****																*****
- * *****	Aufruf in MATLAB: TapeID = madTapeCreate()					*****
- * *****																*****
- * **************************************************************************
- */
+// main mex routine
 void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )  
 { 
-    // Initialisierung der MEX-Funktion
+    // initialization of the mex file
  	if (!MexInitialized) 
 		MexInitialized = madInitialize(__FILE__, &persistent_array_ptr, cleanup);
 
-    // Prüfen der Anzahl der Eingabe- und Rückgabeargumente
+    // check number of input and return parameters
 	madCheckNumInputs(nrhs, 1, 1);
 	madCheckNumOutputs(nlhs, 0, 0);        
     
@@ -109,18 +94,6 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 	mexPrintf("Operation file written: %10u\n", stats[OP_FILE_ACCESS]);
 	mexPrintf("Location file written:  %10u\n", stats[LOC_FILE_ACCESS]);
 	mexPrintf("Value file written:     %10u\n", stats[VAL_FILE_ACCESS]);
-	/*
-	mexPrintf("\n");
-	mexPrintf("Operation buffer size:  %10u\n", stats[OP_BUFFER_SIZE]);
-	mexPrintf("Location buffer size:   %10u\n", stats[LOC_BUFFER_SIZE]);
-	mexPrintf("Value buffer size:      %10u\n", stats[VAL_BUFFER_SIZE]);
-	mexPrintf("Taylor buffer size:     %10u\n", stats[TAY_BUFFER_SIZE]);
-	mexPrintf("\n");
-	mexPrintf("Operation type size:    %10u\n", (size_t)sizeof(unsigned char));
-	mexPrintf("Location type size:     %10u\n", (size_t)sizeof(locint));
-	mexPrintf("Value type size:        %10u\n", (size_t)sizeof(double));
-	mexPrintf("Taylor type size:       %10u\n", (size_t)sizeof(revreal));
-	*/
 	mexPrintf("**********************************\n\n");
 
     return;   

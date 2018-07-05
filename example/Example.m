@@ -1,16 +1,18 @@
-% Beispielscript fï¿½r ADOL-C unter Matlab
-%
-% Vorher bitte Readme lesen
+% Example script that demonstrates how to use the toolbox.
+
+% (c) 2010-2018 
+% Mirko Franke, Jan Winkler, Carsten Friede
+% Institute of Control Theory
+% Technische Universität Dresden
+% {Mirko.Franke, Jan.Winkler}@tu-dresden.de
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 1: Pfade hinzufï¿½gen und DLL kopieren
-% 
-% Benï¿½tigt wird Datei Settings.m, in der der die Pfade richtig spezifiziert
-% werden mï¿½ssen
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SettingsFile    = '../madSettings';
-%SettingsFile    = '../madSettings_Octave_Win';
+%% 
+% Step 1: load the settings
+% requires the file Settings.m that defines reqired path variables
+
+%SettingsFile    = '../madSettings';
+SettingsFile    = '../madSettings_Octave_Win';
 %SettingsFile    = '../madSettings_Octave_Linux';
     
 % load settings
@@ -20,57 +22,54 @@ Settings = eval(name);
 rmpath(filepath);
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 2: Tape erzeugen
-% muss nur 1x durchgefï¿½hrt werden
+%%
+% Step 2: generate the tapes
+% this step has to be done once for each function that has to be taped
 % 
-% Benï¿½tigt wird Datei XSinXY.m, in der der reine Code der Funktion steht
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% in this example the function is implemented within the file XSinXY.m
 
-% n = 2, d = 1, keep = 0
-TapeId = madTapeCreate(2, 1, 1, 'XSinXY.m', Settings);
+n = 2;      % number of independent variables
+d = 1;      % number of dependent variables
+keep = 1;   % prepare for an immediate call of the reverse mode (see the ADOL-C manual)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 3: Arbeiten mit den Treibern
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% generate the tape
+TapeId = madTapeCreate(n, m, keep, 'XSinXY.m', Settings);
 
-% Funktionswert an der Stelle (3,4)
+
+%%
+% Step 3: using the toolbox drivers
+
+% function evaluation at (3, 4)
 X = [3 4]';
 disp('Funktionswert: ');
-%madFunction(TapeId, X)
+madFunction(TapeId, X)
 
-% Gradient an der Stelle (3,4)
+% gradient evaluation at (3, 4)
 X = [3 4]';
 disp('Gradient: ');
 madGradient(TapeId, X)
 
-% Jacobimatrix an der Stelle (3,4)
+% Jacobian evaluation at (3, 4)
 X = [3 4]';
 disp('Jacobi-Matrix: ');
 madJacobian(TapeId, X)
 
-% Hessematrix an der Stelle (3,4)
+% Hessian evaluation at (3, 4)
 X = [3 4]';
 disp('Hessematrix: ');
 madHessian(TapeId, X)
 
-% forward bis d=2
+% forward mode
 X = [3 4; 4 -2; 4 -2]';
 disp('forward: ');
 madForward(TapeId, 2, 0, X)
 
-% Ende
+% close the tape
 madTapeClose(TapeId);
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schritt 4: Pfade lï¿½schen und aufrï¿½umen
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+% Step 4: clean up
 
-%clear madTapingPath madDriversPath
 clear all;
-%clear mex;  % mex-Funktionen entladen
-warning off;
-%delete *.cpp *.obj *.exe;
-warning on;
+clear mex;
