@@ -30,13 +30,13 @@ function install()
 
     
     % compiler and linker settings
-    iPath1 = ['-I', Settings.IncDir];
-    iPath2 = ['-I', 'madDrivers/src/madHelpers'];
-    iPath3 = ['-I', 'madDrivers/src/MatrixLib'];
-    lPath = ['-L', Settings.LibDir];
-    lName = '-ladolc';
+    iPath1   = ['-I', Settings.IncDir];
+    iPath2   = ['-I', 'madDrivers/src/madHelpers'];
+    iPath3   = ['-I', 'madDrivers/src/MatrixLib'];
+    lPath    = ['-L', Settings.LibDir];
+    lName    = '-ladolc';
     buildDir = './madDrivers/build/';
-    oPath = {'-outdir' buildDir};
+    oPath    = {'-outdir' buildDir};
     defDebug = '-D__DEBUG__';
     enDebug  = '-g';
 
