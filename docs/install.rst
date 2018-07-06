@@ -28,12 +28,13 @@ The ADOL-C4MATLAB toolbox has the following requirements
    -  either
 
       -  Matlab >= 2015b and
-      -  an suitable compiler supporting C++11
-      -  Microsoft Visual Studio (Visual C++) 2015 or newer `must be
-         supported by the specific Matlab version`_, be aware that the
-         64-bit compiler only can be used with a 64-bit version of
-         Matlab)
-      -  MinGW-w64
+      
+         -  an suitable compiler supporting C++11
+         -  Microsoft Visual Studio (Visual C++) 2015 or newer `must be
+            supported by the specific Matlab version`_, be aware that the
+            64-bit compiler only can be used with a 64-bit version of
+            Matlab)
+         -  MinGW-w64
 
    -  or
 
