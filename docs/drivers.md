@@ -1,8 +1,57 @@
 Drivers
 =======
 
-Basic Drivers
--------------
+<!-- TOC depthTo:3 -->
+
+- [Drivers](#drivers)
+	- [Basic Drivers](#basic-drivers)
+		- [madForward](#madforward)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+		- [madFunction](#madfunction)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+		- [madGradient](#madgradient)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+		- [madHessian](#madhessian)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+		- [madJacobian](#madjacobian)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+		- [madLieBracket](#madliebracket)
+		- [madLieCovector](#madliecovector)
+		- [madLieDerivative](#madliederivative)
+		- [madLieGradient](#madliegradient)
+		- [madLieMixedDerivative](#madliemixedderivative)
+		- [madLieScalar](#madliescalar)
+		- [madReverse madReverse](#madreverse-madreverse)
+	- [Advanced Drivers](#advanced-drivers)
+		- [madCompTorqueControl](#madcomptorquecontrol)
+		- [madCompTorqueLagrange](#madcomptorquelagrange)
+		- [madExtLuenObs](#madextluenobs)
+		- [madFeedbackLin](#madfeedbacklin)
+		- [madHighGainObs](#madhighgainobs)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Examples](#examples)
+				- [Lorenz System](#lorenz-system)
+		- [madLagrange](#madlagrange)
+		- [madLagrangePartLin](#madlagrangepartlin)
+		- [madPartLin](#madpartlin)
+			- [Synopsis](#synopsis)
+			- [Description](#description)
+			- [Example](#example)
+
+<!-- /TOC -->
+
+## Basic Drivers
 
 ### madForward
 
@@ -27,7 +76,7 @@ of the function $`F`$ represented by the tape with the tape number `TapeId`. The
 x(t) = x_0 + x_1 t x_2 t^2 + \ldots + x_d t^d + \mathcal{O}(t^d)
 ```
 
-with $`n`$ the number of independent variables of the function and $`d`$ the number of derivatives of $`x(t)`$. The flag $`keep`$ determines how many derivatives are internally stored for the use of the reverse mode. The following must hold: $`1 \leq \mathtt{keep} \leq \mathtt{d}+1`$. The function returns a $`\mathtt{m} \times \mathtt{d}+1`$ matrix containing the Taylor coefficients $`z_i`$ ($`i=0,\ldots,d`$) of the image path with $`m`$ the number of dependent variables.
+with `n` the number of independent variables of the function and `d` the number of derivatives of $x(t)$. The flag `keep` determines how many derivatives are internally stored for the use of the reverse mode. The following must hold: $1 \leq \mathtt{keep} \leq \mathtt{d}+1$. The function returns a $`\mathtt{m} \times \mathtt{d}+1`$ matrix containing the Taylor coefficients $`z_i`$ ($`i=0,\ldots,d`$) of the image path with $`m`$ the number of dependent variables.
 
 Keep in mind that the Taylor coefficients of the paths are defined as follows:
 
@@ -40,7 +89,7 @@ x_k = \frac{1}{k!}\frac{\partial^k}{\partial t^k}x(t), \qquad z_k = \frac{1}{k!}
 It is assumed that the function
 
 ```math
-{y} = \begin{pmatrix}
+y = \begin{pmatrix}
 	x_1^2x_2 + x_1\cos(x_2)\\
 	x_2^2\sin(x_1) + x_2x_1^2
 \end{pmatrix}
@@ -216,8 +265,8 @@ is represented by the tape with the number `TapeId`. Then the value of the Hessi
 
 
 
-Advanced Drivers
-----------------
+## Advanced Drivers
+
 
 ### madCompTorqueControl
 
@@ -269,9 +318,9 @@ with the output
 	y = h(x) = \arctan x_3
 ```
 
-where $`\sigma = 10$`, $`b = 8/3$`, $`r = 28`$ are represented by the tapes with the numbers `TapeId`F and `TapeId`H.
+where $`\sigma = 10$`$, $`b = 8/3$`$, $`r = 28`$ are represented by the tapes with the numbers `TapeId`F and `TapeId`H.
 
-For simplicity the observer dynamics is chosen such that all poles are $`-10$`. This results in $`k=(30, 300, 1000)^T$`. The initial observer state is chosen to be `$ \hat x_0 = (1, 1, 1)^T`$ while the true initial state is `$ x_0 = (10, 10, 10)^T$`.
+For simplicity the observer dynamics is chosen such that all poles are $`-10$`$. This results in $`k=(30, 300, 1000)^T`$. The initial observer state is chosen to be $`\hat x_0 = (1, 1, 1)^T`$ while the true initial state is `$ x_0 = (10, 10, 10)^T$`.
 
 
 	k = [30; 300; 1000];
