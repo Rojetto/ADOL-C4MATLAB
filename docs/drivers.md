@@ -271,7 +271,7 @@ with the output
 
 where $`\sigma = 10$`, $`b = 8/3$`, $`r = 28`$ are represented by the tapes with the numbers `TapeId`F and `TapeId`H.
 
-For simplicity the observer dynamics is chosen such that all poles are $`-10$`. This results in $`k=(30, 300, 1000)^T$`. The initial observer state is chosen to be `$ \hat x_0 = (1, 1, 1)^T`$ while the true initial state is `$ x_0 = (10, 10, 10)^T$`.
+For simplicity the observer dynamics is chosen such that all poles are $`-10`$. This results in $`k=(30, 300, 1000)^T`$. The initial observer state is chosen to be `$ \hat x_0 = (1, 1, 1)^T`$ while the true initial state is `$ x_0 = (10, 10, 10)^T`$.
 
 
 	k = [30; 300; 1000];
