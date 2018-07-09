@@ -9,11 +9,15 @@ madForward
 
 Calculates the scaled Taylor coefficients of the image path.
 
-### Synopsis
+Synopsis
+********
+
+::
 
 	Z = madForward(TapeId, d, keep, X)
 	
-### Description
+Description
+***********
 
 This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,\ldots,d)` of the image path 
 
@@ -36,7 +40,8 @@ Keep in mind that the Taylor coefficients of the paths are defined as follows:
 	x_k = \frac{1}{k!}\frac{\partial^k}{\partial t^k}x(t), \qquad z_k = \frac{1}{k!}\frac{\partial^k}{\partial t^k}z(t), \qquad k = 0, \ldots, d.
 
 
-### Example
+Example
+*******
 	
 It is assumed that the function
 
@@ -48,6 +53,8 @@ It is assumed that the function
 	\end{pmatrix}
 
 is represented by the tape with the number `TapeId` . If one has :math:`x_1(0) = 3, \dot x_1(0) = -3, \ddot x_1(0) = -6` and :math:`x_2(0) = 4, \dot x_1(0) = 4, \ddot x_1(0) = 8` and one wants to calculate :math:`z_0, z_1, z_2` one has to do the following:
+
+::
 
 	>> X = [3 4; -3 4; -3 4]';
 	>> Z = madForward(TapeId, 2, 2, X)
