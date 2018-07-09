@@ -1,5 +1,5 @@
-Taping
-======
+Tape Management
+===============
 
 - [madTapeCreate](#madtapecreate)
 - [madTapeOpen](#madtapeopen)
