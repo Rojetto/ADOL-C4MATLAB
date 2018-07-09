@@ -13,3 +13,5 @@ The open source algorithmic differentiation toolbox ADOL-C is designed for the c
 Functions that are going to be used for differentiation operations first are passed to an automated procedure to build a MEX function, which, when executed, generates so called tapes. This is a special data set containing all necessary information of a considered function which then ADOL-C uses for derivative computation later.
 Furthermore, the interface provides a series of ready to use MEX functions accessing the tapes for their operations, e.g., to get the gradient, Jacobian or Hessian of a function or various Lie derivatives along vector fields. Part of this functions are MATLAB MEX wrappers around the corresponding ADOL-C functions. Beside this basic functionality there is also a more sophisticated and control engineering related part. This contains the direct computation of gains for controllers as the exact input-output linearization or observers such as the extended Luenberger observer.
 The structure of the interface also allows an easy extension by user defined functions.
+
+## [Documentation](docs/index.md)
