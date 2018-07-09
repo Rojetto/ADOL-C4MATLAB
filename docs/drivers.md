@@ -23,7 +23,7 @@ Calculates the scaled Taylor coefficients of the image path.
 	
 #### Description
 
-This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,\\ldots,d)` of the image path 
+This function calculates the scaled Taylor coefficients $`z_i`$ $`(i=0,\\ldots,d)`$ of the image path 
 
 ```math
 z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \\ldots + z_d t^d + \\mathcal{O}(t^d)
