@@ -277,7 +277,7 @@ for MIMO systems:
 
 ##### Lorenz System
 
-Consider that the fector field $`f(x)`$ and the scalar field $`h(x)`$ of the Lorenz system \cite Lor63
+Consider that the fector field $`f(x)`$ and the scalar field $`h(x)`$ of the Lorenz system
 
 ```math
 \dot{x} = f(x) = \begin{pmatrix}
