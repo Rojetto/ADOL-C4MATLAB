@@ -19,7 +19,7 @@ Synopsis
 Description
 ***********
 
-This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,\ldots,d)` of the image path 
+This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,\\ldots,d)` of the image path 
 
 .. math::
 	
