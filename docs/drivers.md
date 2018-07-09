@@ -21,7 +21,7 @@ This function calculates the scaled Taylor coefficients $`z_i`$ $`(i=0,\ldots,d)
 z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \ldots + z_d t^d + \mathcal{O}(t^d)
 ```
 
-of the function $`F`$ represented by the tape with the tape number `TapeId`. The $`n$ \times d`$ matrix $`X`$ contains the Taylor coefficients $`x_i`$ ($`i=0,\ldots,d`$) of the path 
+of the function $`F`$ represented by the tape with the tape number `TapeId`. The $`n \times d`$ matrix $`X`$ contains the Taylor coefficients $`x_i`$ ($`i=0,\ldots,d`$) of the path 
 
 ```math
 x(t) = x_0 + x_1 t x_2 t^2 + \ldots + x_d t^d + \mathcal{O}(t^d)
