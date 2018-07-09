@@ -11,9 +11,7 @@
 % Step 1: load the settings
 % requires the file Settings.m that defines reqired path variables
 
-%SettingsFile    = '../madSettings';
-SettingsFile    = '../madSettings_Octave_Win';
-%SettingsFile    = '../madSettings_Octave_Linux';
+SettingsFile    = '../madSettings';
     
 % load settings
 [filepath, name] = fileparts([SettingsFile, '.m']);
@@ -29,7 +27,7 @@ rmpath(filepath);
 % in this example the function is implemented within the file XSinXY.m
 
 n = 2;      % number of independent variables
-d = 1;      % number of dependent variables
+m = 1;      % number of dependent variables
 keep = 1;   % prepare for an immediate call of the reverse mode (see the ADOL-C manual)
 
 % generate the tape
