@@ -12,7 +12,7 @@ Calculates the scaled Taylor coefficients of the image path.
 Synopsis
 ********
 
-::
+..
 
 	Z = madForward(TapeId, d, keep, X)
 	
@@ -54,7 +54,7 @@ It is assumed that the function
 
 is represented by the tape with the number `TapeId` . If one has :math:`x_1(0) = 3, \dot x_1(0) = -3, \ddot x_1(0) = -6` and :math:`x_2(0) = 4, \dot x_1(0) = 4, \ddot x_1(0) = 8` and one wants to calculate :math:`z_0, z_1, z_2` one has to do the following:
 
-::
+..
 
 	>> X = [3 4; -3 4; -3 4]';
 	>> Z = madForward(TapeId, 2, 2, X)
