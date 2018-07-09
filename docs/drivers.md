@@ -12,32 +12,28 @@ a^2+b^2=c^2
 Basic Drivers
 -------------
 
-madForward
-~~~~~~~~~~
+### madForward
+
 
 Calculates the scaled Taylor coefficients of the image path.
 
-Synopsis
-********
-
-::
+#### Synopsis
 
 	Z = madForward(TapeId, d, keep, X)
 	
-Description
-***********
+#### Description
 
 This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,\\ldots,d)` of the image path 
 
-.. math::
-	
-	z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \\ldots + z_d t^d + \\mathcal{O}(t^d)
+```math
+z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \\ldots + z_d t^d + \\mathcal{O}(t^d)
+```
 
-of the function :math:`F` represented by the tape with the tape number `TapeId`. The :math:`n \times d` matrix `X` contains the Taylor coefficients :math:`x_i` (`i=0,\ldots,d`) of the path 
+of the function $`F`$ represented by the tape with the tape number `TapeId`. The $`n$ \times d`$ matrix $`X`$ contains the Taylor coefficients $`x_i`$ ($`i=0,\ldots,d`$) of the path 
 
-.. math::
-	
+```math
 	x(t) = x_0 + x_1 t x_2 t^2 + \ldots + x_d t^d + \mathcal{O}(t^d)
+```
 
 with `n` the number of independent variables of the function and `d` the number of derivatives of :math:`x(t)`. The flag `keep` determines how many derivatives are internally stored for the use of the reverse mode. The following must hold: :math:`1 \leq \mathtt{keep} \leq \mathtt{d}+1`. The function returns a :math:`\mathtt{m} \times \mathtt{d}+1` matrix containing the Taylor coefficients :math:`z_i` (`i=0,\ldots,d`) of the image path with `m` the number of dependent variables.
 
