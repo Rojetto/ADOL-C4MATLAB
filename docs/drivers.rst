@@ -23,7 +23,7 @@ This function calculates the scaled Taylor coefficients :math:`z_i` :math:`(i=0,
 
 .. math::
 	
-	z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \ldots + z_d t^d + \mathcal{O}(t^d)
+	z(t) = F(x(t)) = z_0 + z_1 t + z_2 t^2 + \\ldots + z_d t^d + \\mathcal{O}(t^d)
 
 of the function :math:`F` represented by the tape with the tape number `TapeId`. The :math:`n \times d` matrix `X` contains the Taylor coefficients :math:`x_i` (`i=0,\ldots,d`) of the path 
 
