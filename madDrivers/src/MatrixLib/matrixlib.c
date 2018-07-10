@@ -419,7 +419,7 @@ matMatrix* matMatrixCreateInv( const matMatrix* const A, matError* const err )
 	D = matMatrixCreateZero(A->N, A->N, err);
 	if (D == NULL) return NULL;
 
-	P = calloc(A->N, sizeof(matIndex));
+	P = (matMatrix*)calloc(A->N, sizeof(matIndex));
 	if (P == NULL) 
 	{
 		*err = matMemError;
@@ -506,7 +506,7 @@ matError matMatrixTra( matMatrix* const A )
 
 	/* Certainly not the most elegant way, but as a first step... */
 	NumEle = A->N*A->M;
-	ZNew = calloc(NumEle, sizeof(matDataType));
+	ZNew = (matDataType*)calloc(NumEle, sizeof(matDataType));
 
 	for (i=0; i < A->N; i++)
 	{
