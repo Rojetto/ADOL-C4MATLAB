@@ -39,6 +39,11 @@ function install()
     oPath    = {'-outdir' buildDir};
     defDebug = '-D__DEBUG__';
     enDebug  = '-g';
+    
+    
+    if ~exist(buildDir, 'dir')
+        mkdir(buildDir);
+    end
 
     
     % list of MEX functions to build
