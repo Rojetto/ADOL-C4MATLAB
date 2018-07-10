@@ -419,7 +419,7 @@ matMatrix* matMatrixCreateInv( const matMatrix* const A, matError* const err )
 	D = matMatrixCreateZero(A->N, A->N, err);
 	if (D == NULL) return NULL;
 
-	P = (matMatrix*)calloc(A->N, sizeof(matIndex));
+	P = (matIndex*)calloc(A->N, sizeof(matIndex));
 	if (P == NULL) 
 	{
 		*err = matMemError;
