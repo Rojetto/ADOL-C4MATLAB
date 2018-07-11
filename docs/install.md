@@ -1,41 +1,57 @@
 Installation
 ============
 
-Requirements
-------------
+
+- [Requirements](#requirements)
+- [Install ADOL-C](#install-adol-c)
+  - [Linux](#linux)
+  - [Windows](#windows)
+- [Install the toolbox](#install-the-toolbox)
+
+
+## Requirements
 
 The ADOL-C4MATLAB toolbox has the following requirements
 
-- for **Linux**
-  - GNU Toolchain
+- for Linux
+  - GNU toolchain
   - ADOL-C
   - Octave (Matlab not tested yet)
-- for **Windows**
-  - MSYS and MinGW (required to build ADOL-C).<br/>
-    Using the MinGW Installation Manager, the following packages have to be chosen:
-    - mingw-developer-toolkit
-    - mingw<32|64>-base
-    - mingw<32|64>-gcc-g++
-    - mingw<32|64>-gcc-objc
-    - msys-base
-  - ColPack (required for ADOL-C)
+- for Windows
+  - MSYS and MinGW (required to build ADOL-C).
+    - 32bit Matlab or Octave:
+      It is recommended to use the [Graphical User Interface Installer](https://sourceforge.net/projects/mingw/).
+        There the following packages have to be chosen:
+      - mingw-developer-toolkit
+      - mingw32-base
+      - mingw32-gcc-g++
+      - mingw32-gcc-objc
+      - msys-base
+    - 64bit Matlab or Octave:
+      You should use [MSYS2](https://www.msys2.org/).
+      Run 'MSYS2 MinGW 64-bit' and execute the following commands to set up the build environment:
+      ```
+      pacman -Syu
+      pacman -Su
+      pacman -S mingw-w64-x86_64-toolchain autoconf make libtool automake
+      ```
+  - ColPack (optional)
   - ADOL-C
   - either
     - Matlab >= 2015b and
-    - an suitable compiler supporting C++11 
-    - Microsoft Visual Studio (Visual C++) 2015 or newer [must be supported by the specific Matlab version](https://de.mathworks.com/support/sysreq/previous_releases.html), be aware that the 64-bit compiler only can be used with a 64-bit version of Matlab)
-    - MinGW-w64
+    - a suitable compiler supporting C++11, e.g., Microsoft Visual Studio (Visual C++) 2015 or newer [must be supported by the specific Matlab version](https://de.mathworks.com/support/sysreq/previous_releases.html), be aware that the 64-bit compiler only can be used with a 64-bit version of Matlab) - the MinGW-w64 Compiler is not supported yet
   - or
     - Octave (already comes with the MinGW compiler)
 
-Install ADOL-C
---------------
+
+## Install ADOL-C
 
 ADOL-C is available from the COIN-OR initiative, see https://projects.coin-or.org/ADOL-C. Alternatively ADOL-C can be cloned from [GitLab](https://gitlab.com/adol-c/adol-c), e.g.:
 
 	git clone https://gitlab.com/adol-c/adol-c
 
 It is recommended to read the installation instructions provided by the ADOL-C package first. A short summary on how to install ADOL-C is given in the following.
+
 
 ### Linux
 
@@ -68,8 +84,7 @@ As the installation instructions of ADOL-C for Windows do not seem to be up to d
    - 'Build Solution' (F7)
  
 
-Install the toolbox
--------------------
+## Install the toolbox
 
 1. At first in \c madSettings.m the paths to the ADOL-C include and library directory have to be set properly. Use absolute paths only. 
 2. Linux only: make sure that the ADOL-C library path can be found at runtime. By default this is not the case when the installation directory of ADOL-C (`/home/<user name>/adolc_base`) was not changed. Therefore the library path has to be added to the `LD_LIBRARY_PATH` variable. This can be done by adding
