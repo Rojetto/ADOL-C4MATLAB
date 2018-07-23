@@ -61,7 +61,6 @@ function install()
                 'madLagrangePartLin';
                 'madLieBracket';
                 'madLieCovector';
-                'madLieDerivative';
                 'madLieGradient';
                 'madLieMixedDerivative';
                 'madLieScalar';

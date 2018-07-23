@@ -151,7 +151,7 @@ void mexFunction( int nlhs, mxArray *plhs[],  int nrhs, const mxArray *prhs[] )
 		//	erweiterte Beobachtbarkeitsmatrix
 		lie_gradient(TapeID_F, TapeID_H, n_F, pX, 2*n_F-1, pQT);
 		
-		// Matrix transponieren, da lie_gradient die transonierte Beobachtbarkeitsmatrix liefert
+		// Matrix transponieren, da lie_gradient die transponierte Beobachtbarkeitsmatrix liefert
 		for (int i=0; i<2*n_F; i++)
 		{
 			for (int j=0; j<n_F; j++)

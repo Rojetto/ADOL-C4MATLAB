@@ -9,7 +9,6 @@ Tape Usage
 	- [madJacobian](#madjacobian)
 	- [madLieBracket](#madliebracket)
 	- [madLieCovector](#madliecovector)
-	- [madLieDerivative](#madliederivative)
 	- [madLieGradient](#madliegradient)
 	- [madLieMixedDerivative](#madliemixedderivative)
 	- [madLieScalar](#madliescalar)
