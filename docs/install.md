@@ -11,7 +11,7 @@ Installation
 
 ## Requirements
 
-The ADOL-C4MATLAB toolbox has the following requirements
+The ADOL-C4MAT toolbox has the following requirements
 
 - for Linux
   - GNU toolchain
