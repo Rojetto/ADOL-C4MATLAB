@@ -1,5 +1,5 @@
-ADOL-C4MATLAB Documentation
-===========================
+ADOL-C4MAT Documentation
+========================
 
 **Contents:**
 
