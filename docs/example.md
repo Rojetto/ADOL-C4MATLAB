@@ -1,7 +1,7 @@
 Example
 =======
 
-This example demonstrates how to use the ADOL-C4MATLAB toolbox.
+This example demonstrates how to use the ADOL-C4MAT toolbox.
 
 Consider the function
 
