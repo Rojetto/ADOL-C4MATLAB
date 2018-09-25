@@ -12,7 +12,7 @@ Tape Usage
 	- [madLieGradient](#madliegradient)
 	- [madLieMixedDerivative](#madliemixedderivative)
 	- [madLieScalar](#madliescalar)
-	- [madReverse madReverse](#madreverse-madreverse)
+	- [madReverse](#madreverse)
 - [Advanced Drivers](#advanced-drivers)
 	- [madCompTorqueControl](#madcomptorquecontrol)
 	- [madCompTorqueLagrange](#madcomptorquelagrange)
@@ -231,7 +231,7 @@ is represented by the tape with the number `TapeId`. Then the value of the Hessi
 
 
 
-### madReverse madReverse
+### madReverse
 
 
 
