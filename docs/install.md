@@ -69,19 +69,29 @@ As the installation instructions of ADOL-C for Windows do not seem to be up to d
 
 1. Run MSYS and go to the ADOL-C base directory.
 2. Execute the following commands:
-   
    ```
    autoreconf -fi
    ./configure
-   make
-   make install
    ```
-
-   where `make` and `make install` only have to be executed when Octave should be used later.
-3. In case Matlab will be used later follow these instructions
-   - Open the Visual Studio Solution `adolc.sln`.
-   - Chose th right configuration (sparse|nosparse) and platform (Win32|x64).
-   - 'Build Solution' (F7)
+3. Build ADOL-C *either*
+    - for **GNU Octave** using **`make` in MSYS**
+        - In the same shell as before, execute
+            ```
+            make
+            make install
+            ```
+    - or for **MATLAB** using **Microsoft Visual Studio**
+        - Setup the required libraries for building ADOL-C:
+            1. __boost 1.70.0__: [Download here](https://www.boost.org/users/history/version_1_70_0.html), then copy the archive contents into `{ADOL-C-DIR}\MSVisualStudio\v14\boost\`
+            2. __ColPack__ (Optional, needed when building `sparse` configuration):
+                * [Download here](https://github.com/CSCsw/ColPack/tree/10b780b52a25c6ccef3d2abc12055ee85b7e8667), newer versions have a directory structure that is incompatible with the VS solution shipped with ADOL-C 2.6.3
+                * Copy archive contents into `{ADOL-C-DIR}\MSVisualStudio\v14\ColPack\`
+                * Move `{ADOL-C-DIR}\MSVisualStudio\v14\ColPack.vcxproj` to `{ADOL-C-DIR}\MSVisualStudio\v14\ColPack\ColPack.vcxproj`
+        - Open `{ADOL-C-DIR}\MSVisualStudio\v14\adolc.sln` in Visual Studio 2015 or newer, VS 2017+ needs to have the 'Desktop Development with C++' workload installed
+        - When using VS 2017+, either agree to retargeting the projects to the current build platform when prompted, or manually retarget by right clicking on the 'adolc' and 'ColPack' projects in the solution explorer, and selecting 'Retarget solution'
+        - Choose the right configuration (sparse|nosparse) and platform (Win32|x64)
+        - Select 'Build', 'Build Solution' (Ctrl+Shift+B)
+        - Generated binaries are in `{ADOL-C-DIR}\MSVisualStudio\v14\sparse|nosparse\` and called `adolc.dll` and `adolc.lib`
  
 
 ## Install the toolbox
@@ -102,5 +112,5 @@ As the installation instructions of ADOL-C for Windows do not seem to be up to d
    ```
    mex -setup
    ```
-   and chose an appropriate compiler that supports C++11, e.g., `Microsoft Visual C++ 2015`
+   and choose an appropriate compiler that supports C++11, e.g., `Microsoft Visual C++ 2015`
 4. Run `install.m`.
